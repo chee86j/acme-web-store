@@ -42,7 +42,7 @@ function WishListButton(product) {
   };
   return (
     <button
-      className={`btn-sm btn-circle btn hover:scale-125 ${isSelected ? "bg-red-600" : "bg-gray-400"
+      className={`btn-sm btn-circle hover:bg-red-500 btn hover:scale-125 ${isSelected ? "bg-red-600" : "bg-gray-400"
         }`}
       onClick={() => onClick()}
     >

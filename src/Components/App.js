@@ -37,7 +37,7 @@ const App = () => {
   useEffect(() => {
     if (auth.id) {
       dispatch(fetchUserCart())
-      dispatch(getWishlist())
+      dispatch(getWishlist(auth.id))
     } else {
       dispatch(fetchGuestCart())
     }

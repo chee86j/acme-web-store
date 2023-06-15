@@ -12,6 +12,7 @@ import { fetchProducts, getWishlist } from "../store"
 
 const PaginatedProducts = () => {
   const { products, wishlist } = useSelector((state) => state.products);
+  const { id } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -27,7 +28,7 @@ const PaginatedProducts = () => {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(getWishlist())
+    dispatch(getWishlist(id))
   }, [])
 
   if (!products) {
