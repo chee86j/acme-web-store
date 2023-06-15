@@ -8,12 +8,14 @@ import Socials from "./ui/Socials"
 import { getAverageRating } from "../util"
 import AddToCartButton from "./AddToCartButton"
 import WishListButton from "./ui/WishListButton"
+import { useParallax } from "react-scroll-parallax"
 
 const PaginatedProducts = () => {
   const { products } = useSelector((state) => state.products)
   const [selectedCategory, setSelectedCategory] = useState("")
   const [searchQuery, setSearchQuery] = useState("")
   const [isOnProductsPage, setIsOnProductsPage] = useState(false) // Determine if we are on the products page
+  const { ref } = useParallax({ speed: 50 })
 
   // Pagination variables
   const [itemsPerPage, setItemsPerPage] = useState(24)
@@ -56,7 +58,7 @@ const PaginatedProducts = () => {
   }
 
   return (
-    <>
+    <div ref={ref}>
       <div className="flex flex-wrap justify-center gap-10">
         {/* Filter by category */}
         <select
@@ -98,7 +100,7 @@ const PaginatedProducts = () => {
         previousClassName="btn-sm join-item bg-primary"
         nextClassName="btn-sm join-item bg-primary"
       />
-    </>
+    </div>
   )
 }
 
