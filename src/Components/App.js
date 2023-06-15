@@ -23,6 +23,7 @@ import { useToast } from "../hooks/useToast"
 import CheckoutPage from "./pages/CheckoutPage"
 import Orders from "./pages/OrdersPage"
 import OrderVerifyPage from "./pages/OrderVerifyPage"
+import WishlistPage from "./pages/WishlistPage"
 
 const App = () => {
   const { auth } = useSelector((state) => state)
@@ -48,6 +49,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/account/wishlist" element={<WishlistPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/account/create" element={<CreateAccount />} />
