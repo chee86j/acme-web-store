@@ -1,38 +1,48 @@
 import React, { useState } from 'react'
 import RemoveFromCartButton from './RemoveFromCartButton'
-import { useDispatch } from 'react-redux'
-import { updateCartQuantity } from '../store'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCartQuantity, updateGuestCartQuantity } from '../store'
 
 const CartItem = ({ product }) => {
+    const {auth} = useSelector(state => state);
     const [quantity, setQuantity] = useState(product.quantity)
     const dispatch = useDispatch()
-
+    
     const handleQuantityIncrement = () => {
-        
-        
-        const updatedCart = {
-                product, 
-                quantity: parseInt(quantity) + 1
+        if (auth.id) {
+            const updatedCart = {
+              product,
+              quantity: parseInt(quantity) + 1,
             }
-        
-
-        dispatch(updateCartQuantity(updatedCart))
-
-        setQuantity(quantity + 1)
+            dispatch(updateCartQuantity(updatedCart))
+            setQuantity(quantity + 1)
+        }else{
+            dispatch(
+              updateGuestCartQuantity({
+                productId: product.product.id,
+                quantity: quantity + 1,
+              })
+            )
+            setQuantity(quantity + 1)
+        }
     }
-
     const handleQuantityDecrement = () => {
-        
-        
-        const updatedCart = {
-                product, 
-                quantity: parseInt(quantity) - 1
+        if (auth.id){
+            const updatedCart = {
+              product,
+              quantity: parseInt(quantity) - 1,
             }
-        
-
-        dispatch(updateCartQuantity(updatedCart))
-
-        setQuantity(quantity - 1)
+            dispatch(updateCartQuantity(updatedCart))
+            setQuantity(quantity - 1)
+        }else{
+            dispatch(
+              updateGuestCartQuantity({
+                productId: product.product.id,
+                quantity: quantity - 1,
+              })
+            )
+            setQuantity(quantity - 1)
+        }
     }
     return (
         <div className="card glass m-4 w-64 sm:card-normal card-compact">

@@ -82,14 +82,18 @@ export const addToGuestCart = createAsyncThunk("addToGuestCart", async (payload)
   return cart;
 })
 
-// export const updateGuestCartQuantity = createAsyncThunk("updateGuestCartQuantity", async (payload) => {
-//   try {
-//     let cart = window.localStorage.getItem("cart")
-//     cart = JSON.parse(cart)
-//   } catch (error) {
-//     console.log(error)
-//   }
-// })
+export const updateGuestCartQuantity = createAsyncThunk("updateGuestCartQuantity", async (payload) => {
+  try {
+    let cart = window.localStorage.getItem("cart")
+    cart = JSON.parse(cart)
+    const index = cart.cartItems.findIndex(item => item.product.id === payload.productId)
+    cart.cartItems[index].quantity = payload.quantity
+    window.localStorage.setItem("cart", JSON.stringify(cart));
+    return cart;
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
   try {
@@ -149,9 +153,9 @@ const cartSlice = createSlice({
     builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
       return action.payload
     })
-    // builder.addCase(updateGuestCartQuantity.fulfilled, (state, action) => {
-    //   return action.payload
-    // })
+    builder.addCase(updateGuestCartQuantity.fulfilled, (state, action) => {
+       return action.payload
+    })
   },
 })
 
