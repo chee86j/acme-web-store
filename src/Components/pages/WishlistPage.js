@@ -18,7 +18,7 @@ function WishlistPage() {
 
     return (
         <div className="flex flex-col items-center">
-            <h1>Wish List</h1>
+            <h1 className="text-lg font-bold">Wish List</h1>
             <table className="table p-3">
                 <thead>
                     <tr>
@@ -50,7 +50,7 @@ function WishlistPage() {
                                             </div>
 
                                             <div>
-                                                <div className="font-bold">{product.product.name}</div>
+                                                <div className="text-lg md:text-mdfont-bold">{product.product.name}</div>
                                                 <div className="text-sm opacity-50">
                                                     {product.product.material}
                                                 </div>

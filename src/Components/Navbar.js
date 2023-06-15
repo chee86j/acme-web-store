@@ -19,19 +19,19 @@ function Navbar({ auth }) {
   const cartDisplayQuantity = cartQuantity(cart.cartItems ? cart.cartItems : [])
 
   return (
-    <div className="navbar sticky top-0 z-10 bg-base-200">
+    <div className="navbar sticky top-0 z-20 bg-base-200">
       <div className="flex-1">
         <NavLink
           to={"/"}
           className={({ isActive, isPending }) =>
-            `text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
+            `btn-xs md:btn-md text-md btn-ghost btn normal-case ${isActive ? "btn-active" : ""}`
           }
         >
           Home
         </NavLink>
         {auth.isAdmin && (
           <NavLink
-            to={"/admin"}
+            to={"/admin/products"}
             className={({ isActive, isPending }) =>
               `text-md btn-ghost btn-xs btn normal-case md:btn-md ${
                 isActive ? "btn-active" : ""

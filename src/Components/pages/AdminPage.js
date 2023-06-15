@@ -1,3 +1,4 @@
+import { MenuIcon } from "lucide-react"
 import React from "react"
 import { useSelector } from "react-redux"
 import { Link, Outlet, NavLink } from "react-router-dom"
@@ -14,19 +15,19 @@ const AdminPage = () => {
     <div className="">
       <div className="drawer md:drawer-open">
         <input id="adminSidebar" type="checkbox" className="drawer-toggle" />
-        <div className="drawer-content flex flex-col items-center ">
+        <div className="drawer-content flex flex-col">
           {/* Page content here */}
           <Outlet />
           <label
             htmlFor="adminSidebar"
-            className="drawer-button btn-primary btn md:hidden"
+            className="drawer-button btn-outline btn md:hidden fixed bottom-4 right-4"
           >
-            Sidebar Toggle
+            <MenuIcon size={24} />
           </label>
         </div>
-        <div className="drawer-side">
-          <label htmlFor="adminSidebar" className="drawer-overlay"></label>
-          <ul className="menu h-full w-40 bg-base-300 p-4 text-base-content">
+        <div className="drawer-side   z-50">
+          <label htmlFor="adminSidebar" className="drawer-overlay "></label>
+          <ul className="menu h-full w-40 bg-base-300 p-4 text-base-content ">
             {/* Sidebar content here */}
             <li>
               <NavLink
