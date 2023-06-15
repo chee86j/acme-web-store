@@ -8,6 +8,7 @@ import Socials from "./ui/Socials"
 import { getAverageRating } from "../util"
 import AddToCartButton from "./AddToCartButton"
 import WishListButton from "./ui/WishListButton"
+import { useParallax } from "react-scroll-parallax"
 import { fetchProducts, getWishlist } from "../store"
 
 const PaginatedProducts = () => {
@@ -24,6 +25,8 @@ const PaginatedProducts = () => {
   const [itemOffset, setItemOffset] = useState(0);
 
   const endOffset = itemOffset + itemsPerPage;
+
+  const { ref } = useParallax({ speed: 50 })
 
   const location = useLocation();
 
@@ -68,7 +71,7 @@ const PaginatedProducts = () => {
   };
 
   return (
-    <>
+    <div ref={ref}>
       <div className="flex flex-wrap justify-center gap-10">
         {/* Filter by category */}
         <select
@@ -110,9 +113,9 @@ const PaginatedProducts = () => {
         previousClassName="btn-sm join-item bg-primary"
         nextClassName="btn-sm join-item bg-primary"
       />
-    </>
-  );
-};
+    </div>
+  )
+}
 
 export const Products = ({ currentProducts, wishlist }) => {
   return (

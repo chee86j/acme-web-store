@@ -27,6 +27,7 @@
     "nodemailer": "^6.9.3",
     "pg": "^8.8.0",
     "react-paginate": "^8.2.0",
+    "react-scroll-parallax": "^3.4.2",
     "sequelize": "^6.25.3",
     "stripe": "^12.8.0"
   },

@@ -25,6 +25,7 @@ import Orders from "./pages/OrdersPage"
 import OrderVerifyPage from "./pages/OrderVerifyPage"
 import WishlistPage from "./pages/WishlistPage"
 
+
 const App = () => {
   const { auth } = useSelector((state) => state)
   const dispatch = useDispatch()
@@ -45,7 +46,7 @@ const App = () => {
   return (
     <div className="flex flex-col h-screen">
       <Navbar auth={auth} />
-      <div className="flex-grow">
+      <div className="flex-grow" id="mainBackground">
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/account" element={<Account />} />

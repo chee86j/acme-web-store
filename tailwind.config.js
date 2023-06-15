@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{html,js}", "./static/**/*.{html,css}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "3d": ['"Bungee Shade"'],
+      },
+    },
   },
   daisyui: {
     themes: [
