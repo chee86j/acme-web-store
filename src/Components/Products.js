@@ -74,7 +74,7 @@ const PaginatedProducts = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+          className="xl:btn-xl btn-ghost join-item btn mt-6 flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         >
           <option value="">All Categories</option>
           <option value="Category1">Category 1</option>
@@ -88,7 +88,7 @@ const PaginatedProducts = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search"
-          className="xl:btn-xl btn-ghost btn mt-6 text-2xl font-bold normal-case"
+          className="xl:btn-xl btn-ghost join-item btn mt-6 flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         />
       </div>
 
