@@ -56,25 +56,30 @@ const SingleProductView = () => {
     </>
   ) : (
     <div>
-      <div className="flex flex-wrap justify-center gap-10 mt-6 text-2xl font-bold normal-case"> 
+      <div className="flex flex-wrap justify-center gap-10 m-6 text-2xl font-bold normal-case"> 
         {product.name}
       </div>
       <hr />
-      <div className="flex flex-row justify-center">
-        <div className="card glass card-compact m-4 w-64 sm:card-normal">
-          <img src={product.imageURL} className="mask-square aspect-square h-full w-full"/>
-          <p className="text-sm">{product.description}</p>
-          <span className="badge badge-ghost">
-            <span className="text-lg font-bold">$</span>
-            <span className="font-bold">{product.price}</span>
-          </span>
-          <form onSubmit={(event) => event.preventDefault()}>
-            <input
-              value={quantity}
-              onChange={(event) => setQuantity(event.target.value)}
-            />
-            <AddToCartButton product={product} quantity={parseInt(quantity)} />
-          </form>
+      <div className="flex flex-col justify-center items-center">
+        <div className="card w-64 glass m-4">
+          <figure><img src={product.imageURL}/></figure>
+          <div className="card-body">
+            <p className="text-sm">{product.description}</p>
+            <span className="badge badge-ghost">
+              <span className="text-lg font-bold">$</span>
+              <span className="font-bold">{product.price}</span>
+            </span>
+            <form className="form-control" onSubmit={(event) => event.preventDefault()}>
+              <input
+                className="input input-bordered w-full max-w-xs"
+                value={quantity}
+                onChange={(event) => setQuantity(event.target.value)}
+              />
+              <div className="card-actions justify-end">
+                <AddToCartButton product={product} quantity={parseInt(quantity)} />
+              </div>
+            </form>
+          </div>
         </div>
         <ReviewForm />
       </div>
