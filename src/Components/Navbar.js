@@ -5,6 +5,7 @@ import { logout } from "../store/auth"
 import CartDropdown from "./CartDropdown"
 import { cartQuantity } from "../util"
 import { fetchGuestCart, fetchUserCart } from "../store"
+import { ScrollTextIcon } from "lucide-react"
 
 function Navbar({ auth }) {
   const dispatch = useDispatch()
@@ -61,9 +62,15 @@ function Navbar({ auth }) {
           Orders
         </NavLink>
       </div>
+      {auth.id && (
+        <div className="btn btn-ghost btn-circle mx-2" onClick={() => navigate("/account/wishlist")}>
+          <ScrollTextIcon size={24} />
+        </div>
+      )}
+
       <div className="flex-none">
         {
-          <div className="dropdown-end dropdown">
+          <div className="dropdown-end dropdown  mx-2">
             <label tabIndex={0} className="btn-ghost btn-circle btn">
               <div className="indicator">
                 <svg
@@ -96,12 +103,12 @@ function Navbar({ auth }) {
             {auth.avatar ? (
               <img
                 src={auth.avatar}
-                className="avatar h-8 w-8 cursor-pointer rounded-full hover:scale-110 md:h-10 md:w-10"
+                className="avatar h-8 w-8 cursor-pointer rounded-full hover:scale-110 md:h-10 md:w-10 mx-2"
                 onClick={() => navigate("/account")}
               />
             ) : (
               <Link to="/account">
-                <span className="">Account</span>
+                  <span className="px-3">Account</span>
               </Link>
             )}
           </>

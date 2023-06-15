@@ -7,7 +7,7 @@ import CreateAccount from "./CreateAccount"
 import NotFound from "./NotFound"
 import SingleProductView from "./SingleProductView"
 import { useSelector, useDispatch } from "react-redux"
-import { loginWithToken, fetchGuestCart, fetchUserCart, fetchProducts,} from "../store"
+import { loginWithToken, fetchGuestCart, fetchUserCart, fetchProducts, getWishlist } from "../store"
 import { Link, Routes, Route } from "react-router-dom"
 import Navbar from "./Navbar"
 import Account from "./Account"
@@ -23,6 +23,7 @@ import { useToast } from "../hooks/useToast"
 import CheckoutPage from "./pages/CheckoutPage"
 import Orders from "./pages/OrdersPage"
 import OrderVerifyPage from "./pages/OrderVerifyPage"
+import WishlistPage from "./pages/WishlistPage"
 
 
 const App = () => {
@@ -37,6 +38,7 @@ const App = () => {
   useEffect(() => {
     if (auth.id) {
       dispatch(fetchUserCart())
+      dispatch(getWishlist(auth.id))
     } else {
       dispatch(fetchGuestCart())
     }
@@ -48,6 +50,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/account/wishlist" element={<WishlistPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/account/create" element={<CreateAccount />} />
