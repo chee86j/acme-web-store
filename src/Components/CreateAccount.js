@@ -67,6 +67,7 @@ const CreateAccount = () => {
                 ? "input-bordered input-primary input m-1 border-2 bg-neutral text-black"
                 : "input-bordered input-warning input m-1 border-2 bg-neutral text-black"
             }
+            type="password"
             placeholder="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}

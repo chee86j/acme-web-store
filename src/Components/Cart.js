@@ -27,19 +27,22 @@ const Cart = () => {
 
   return (
     <div>
-      <h1 className="flex flex-wrap justify-center gap-10 mt-6 text-2xl font-bold normal-case">Cart</h1>
-      <div className="m-4 flex flex-shrink flex-wrap justify-center">
-        {cartItems.map((product) => (
-          <CartItem key={product.product.id} product={product}/>
-        ))}
-        <div className="flex-row">
+      <h1 className="flex justify-center gap-10 m-6 text-2xl font-bold normal-case">Cart</h1>
+      <hr />
+      <div className="flex flex-row">
+        <div className="m-4 flex flex-shrink flex-wrap mr-64">
+          {cartItems.map((product) => (
+            <CartItem key={product.product.id} product={product}/>
+          ))}
+        </div>
+        <div className="card w-64 glass fixed mt-4 p-4" style={{height: "150px", right: 15}}>
           <div className="badge badge-ghost">
             <div className="text-lg font-bold"> Total: ${totalPrice}</div>
           </div>
           <div>{totalItems} Items</div>
+          <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/verify")}}>Checkout</button>
         </div>
       </div>
-      <button className="btn-primary btn-block btn" onClick={()=>{navigate("/orders/verify")}}>Checkout</button>
     </div>
   )
 }
