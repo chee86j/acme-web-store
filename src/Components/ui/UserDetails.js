@@ -39,7 +39,6 @@ function UserDetails({ user }) {
                     <th>Created At</th>
                     <th>Total Items</th>
                     <th>Total Price</th>
-                    <th>Items</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -66,11 +65,6 @@ function UserDetails({ user }) {
                             </td>
                             <td>{totalItems}</td>
                             <td>{totalPrice}</td>
-                            <td>
-                              <button className="btn-neutral btn">
-                                View Items
-                              </button>
-                            </td>
                           </tr>
                         )
                       })}
