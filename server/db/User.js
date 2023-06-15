@@ -107,6 +107,20 @@ User.prototype.getOrders = async function () {
   return orders
 }
 
+User.prototype.getWishlistItems = async function () {
+  let wishlist = await conn.models.wishlist.findAll({
+    where: {
+      userId: this.id,
+    },
+    include: [
+      {
+        model: conn.models.product,
+      },
+    ],
+  })
+  return wishlist
+}
+
 User.prototype.setAdmin = async function (bool) {
   this.isAdmin = bool
   await this.save()

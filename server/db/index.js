@@ -81,6 +81,14 @@ const createFakeOrder = (userId) => {
   }
 }
 
+const createFakeWishlistItem = (userId, productId) => {
+  return {
+    userId: userId,
+    productId: productId,
+  };
+};
+
+
 const createFakeLineItem = (orderId, productId) => {
   return {
     quantity: Math.floor(Math.random() * 1000),
@@ -190,12 +198,30 @@ const addReviewsToProducts = async () => {
 
 }
 
+const addWishlistItems = async () => {
+  const products = await Product.findAll({ attributes: ["id"] });
+  const users = await User.findAll({ attributes: ["id"] });
+  let wishlistItems = [];
+  for (let user of users) {
+    const i = faker.helpers.multiple(
+      () =>
+        createFakeWishlistItem(
+          user.dataValues.id,
+          faker.helpers.arrayElement(products).dataValues.id
+        ),
+      { count: 2 }
+    );
+    wishlistItems.push(...i);
+  }
+  await Promise.all(wishlistItems.map((itm) => Wishlist.create(itm)));
+};
+
 const seedProducts = async () => {
   const fakeProducts = faker.helpers.multiple(createFakeProduct, {
     count: TOTAL_PRODUCTS,
-  })
-  await Promise.all(fakeProducts.map((product) => Product.create(product)))
-}
+  });
+  await Promise.all(fakeProducts.map((product) => Product.create(product)));
+};
 
 const seedUsers = async () => {
   const [moe, lucy, larry, ethyl] = await Promise.all([
@@ -205,38 +231,37 @@ const seedUsers = async () => {
       email: "seed1@test.com",
       isAdmin: true,
       stripeId: "cus_O2a2nOTbV2IKx8",
-      avatar: avatarImage
-
+      avatar: avatarImage,
     }),
     User.create({
       username: "lucy",
       password: "123",
       email: "seed2@test.com",
       stripeId: "cus_O2aA5XZxwpruPF",
-      avatar: avatarImage2
+      avatar: avatarImage2,
     }),
     User.create({
       username: "dudedude",
       password: "123",
       email: "seed5@test.com",
       stripeId: "cus_O2aBih6vn7wbEa",
-      avatar: avatarImage
+      avatar: avatarImage,
     }),
     User.create({
       username: "larry",
       password: "123",
       email: "seed3@test.com",
       stripeId: "cus_O2aBxuGDPfPlD2",
-      avatar: avatarImage2
+      avatar: avatarImage2,
     }),
     User.create({
       username: "ethyl",
       password: "123",
       email: "seed4@test.com",
       stripeId: "cus_O2aCVXnQzwXMri",
-      avatar: avatarImage
+      avatar: avatarImage,
     }),
-  ])
+  ]);
   await Order.create({
     email: "test123@gmail.com",
     firstName: "test",
@@ -246,12 +271,13 @@ const seedUsers = async () => {
     state: "Oregon",
     zip: "12345",
     userId: moe.id,
-  })
-  await addCartAndOrders()
-  await addItemsToCart()
-  await addItemsToOrder()
-  await addReviewsToProducts()
-}
+  });
+  await addCartAndOrders();
+  await addItemsToCart();
+  await addItemsToOrder();
+  await addReviewsToProducts();
+  await addWishlistItems();
+};
 
 const seed = async () => {
   await seedProducts()

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Link, useLocation } from "react-router-dom"
 import ReactPaginate from "react-paginate"
@@ -8,52 +8,64 @@ import Socials from "./ui/Socials"
 import { getAverageRating } from "../util"
 import AddToCartButton from "./AddToCartButton"
 import WishListButton from "./ui/WishListButton"
+import { fetchProducts, getWishlist } from "../store"
 
 const PaginatedProducts = () => {
-  const { products } = useSelector((state) => state.products)
-  const [selectedCategory, setSelectedCategory] = useState("")
-  const [searchQuery, setSearchQuery] = useState("")
-  const [isOnProductsPage, setIsOnProductsPage] = useState(false) // Determine if we are on the products page
+  const { products, wishlist } = useSelector((state) => state.products);
+  const { id } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isOnProductsPage, setIsOnProductsPage] = useState(false); // Determine if we are on the products page
 
   // Pagination variables
-  const [itemsPerPage, setItemsPerPage] = useState(24)
-  const [itemOffset, setItemOffset] = useState(0)
+  const [itemsPerPage, setItemsPerPage] = useState(24);
+  const [itemOffset, setItemOffset] = useState(0);
 
-  const endOffset = itemOffset + itemsPerPage
+  const endOffset = itemOffset + itemsPerPage;
 
-  const location = useLocation()
+  const location = useLocation();
+
+  useEffect(() => {
+    dispatch(getWishlist(id))
+  }, [])
+
+  if (!products) {
+    return <>Loading...</>
+  }
 
   // Hook to listen for changes in the url to determine if we are on the products page
   useEffect(() => {
-    setIsOnProductsPage(location.pathname === "/products")
-  }, [location])
+    setIsOnProductsPage(location.pathname === "/products");
+  }, [location]);
 
   // Filter products based on search query and selected category
   // useMemo is used to prevent the filterProducts array from being recalculated on every render
   const filterProducts = useMemo(() => {
     if (!isOnProductsPage) {
-      return products
+      return products;
     }
     return products.filter(
       (product) =>
         (selectedCategory === "" || product.category === selectedCategory) &&
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  }, [products, selectedCategory, searchQuery, isOnProductsPage])
+    );
+  }, [products, selectedCategory, searchQuery, isOnProductsPage]);
 
   // Set the item offset when the search query or selected category changes
   useEffect(() => {
-    setItemOffset(0)
-  }, [searchQuery, selectedCategory])
+    setItemOffset(0);
+  }, [searchQuery, selectedCategory]);
 
-  const currentProducts = filterProducts.slice(itemOffset, endOffset)
-  const pageCount = Math.ceil(filterProducts.length / itemsPerPage)
+  const currentProducts = filterProducts.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(filterProducts.length / itemsPerPage);
 
   const handlePageClick = (event) => {
-    const newOffset = event.selected * itemsPerPage
-    setItemOffset(newOffset)
-    window.scrollTo(0, 0)
-  }
+    const newOffset = event.selected * itemsPerPage;
+    setItemOffset(newOffset);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <>
@@ -81,7 +93,7 @@ const PaginatedProducts = () => {
       </div>
 
       {/* Display filtered products */}
-      <Products currentProducts={currentProducts} />
+      <Products currentProducts={currentProducts} wishlist={wishlist} />
 
       {/* Pagination */}
       <ReactPaginate
@@ -99,10 +111,10 @@ const PaginatedProducts = () => {
         nextClassName="btn-sm join-item bg-primary"
       />
     </>
-  )
-}
+  );
+};
 
-export const Products = ({ currentProducts }) => {
+export const Products = ({ currentProducts, wishlist }) => {
   return (
     <div className="m-4 flex flex-shrink flex-wrap justify-center">
       {currentProducts.map((product) => {
@@ -139,15 +151,15 @@ export const Products = ({ currentProducts }) => {
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-center p-3">
-                <WishListButton product={product} />
+                <WishListButton product={product} wishlist={wishlist} />
                 <AddToCartButton product={product} quantity={1} />
               </div>
             </div>
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
 export default PaginatedProducts

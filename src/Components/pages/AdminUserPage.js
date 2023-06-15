@@ -11,8 +11,8 @@ function AdminUserPage() {
     dispatch(fetchUsers())
   }, [])
   return (
-    <div className="flex w-full flex-row">
-      <div className="w-1/2 p-2">
+    <div className="flex w-full flex-col xl:flex-row">
+      <div className="p-2 xl:w-1/2">
         <h2 className="p-2 text-sm">
           Select a user to view orders, carts, and reviews.
         </h2>
@@ -28,7 +28,7 @@ function AdminUserPage() {
                   <th>Joined</th>
                   <th>Admin</th>
                   <th>Stripe ID</th>
-                  <th>Total Orders and Carts</th>
+                  <th>Orders</th>
                 </tr>
               </thead>
               <tbody>
@@ -61,7 +61,7 @@ function AdminUserPage() {
           </div>
         </div>
       </div>
-      <div className="w-1/2 p-2">
+      <div className="p-2 xl:w-1/2">
         <UserDetails user={selectedUser} />
       </div>
     </div>
