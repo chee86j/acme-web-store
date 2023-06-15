@@ -111,7 +111,6 @@ export const removeFromCart = createAsyncThunk("removeFromCart", async (payload)
 
 export const removeFromGuestCart = createAsyncThunk("removeFromGuestCart", async (payload) => {
   try {
-    console.log(payload);
     let cart = window.localStorage.getItem("cart");
     cart = JSON.parse(cart);
     const index = cart.cartItems.findIndex(item => item.product.id === payload.product.product.id)

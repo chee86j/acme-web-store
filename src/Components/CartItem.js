@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 import RemoveFromCartButton from './RemoveFromCartButton'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateCartQuantity, updateGuestCartQuantity } from '../store'
+import {
+  removeFromCart,
+  updateCartQuantity,
+  updateGuestCartQuantity,
+  removeFromGuestCart,
+} from "../store"
 
 const CartItem = ({ product }) => {
     const {auth} = useSelector(state => state);
@@ -26,7 +31,7 @@ const CartItem = ({ product }) => {
             setQuantity(quantity + 1)
         }
     }
-    const handleQuantityDecrement = () => {
+    const handleQuantityDecrement = async () => {
         if (auth.id){
             const updatedCart = {
               product,
@@ -34,6 +39,9 @@ const CartItem = ({ product }) => {
             }
             dispatch(updateCartQuantity(updatedCart))
             setQuantity(quantity - 1)
+            if(quantity-1 === 0){
+                dispatch(removeFromCart({product: product}))
+            }
         }else{
             dispatch(
               updateGuestCartQuantity({
@@ -42,6 +50,9 @@ const CartItem = ({ product }) => {
               })
             )
             setQuantity(quantity - 1)
+            if (quantity-1 === 0) {
+              dispatch(removeFromGuestCart({product: {product}}))
+            }
         }
     }
     return (
