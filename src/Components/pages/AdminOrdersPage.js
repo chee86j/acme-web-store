@@ -53,7 +53,7 @@ function AdminOrdersPage() {
       {selectedOrder && (
         <Modal
           open={selectedOrder}
-          className="md:min-w-2xl lg:min-w-4xl w-3/4"
+          className="md:min-w-2xl lg:min-w-4xl w-full"
           responsive
           onClickBackdrop={() => setSelectedOrder(null)}
         >
@@ -134,6 +134,9 @@ function AdminOrdersPage() {
           </div>
         </Modal>
       )}
+      <div className="w-full">
+
+
       <h1>Orders</h1>
       <div className="flex flex-row justify-evenly">
         <div className="form-control w-full">
@@ -249,6 +252,7 @@ function AdminOrdersPage() {
           nextClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
         />
       </div>
+    </div>
     </div>
   )
 }
