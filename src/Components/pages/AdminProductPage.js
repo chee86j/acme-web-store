@@ -130,16 +130,25 @@ function AdminProductPage() {
     }
   }
 
+  
+  const handleModalClose = () => {
+    setSelectedProduct(null)
+    setIsAdding(false)
+    setPendingChanges(false)
+  }
+
   const handleSubmit = () => {
     dispatch(updateProduct(selectedProduct))
     setPendingChanges(false)
     setSelectedProduct(null)
+    setIsAdding(false)
   }
 
   const handleAdd = () => {
     dispatch(createProduct(selectedProduct))
     setPendingChanges(false)
     setSelectedProduct(null)
+    setIsAdding(false)
   }
 
   return (
@@ -150,7 +159,7 @@ function AdminProductPage() {
             open={selectedProduct}
             className="md:min-w-2xl lg:min-w-4xl w-3/4"
             responsive
-            onClickBackdrop={() => setSelectedProduct(null)}
+            onClickBackdrop={() => handleModalClose()}
           >
             <ModalHeader className="font-bold">
               {selectedProduct && selectedProduct.name}
