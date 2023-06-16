@@ -37,16 +37,16 @@ const Cart = () => {
           ))}
         </div>
         <div
-          className="card glass fixed mb-4 mt-4 w-64 p-4 h-36 right-4"
+          className="card glass fixed mb-4 mt-4 w-64 p-4 h-36 right-4 bg-base-300"
         >
           <div className="badge badge-ghost my-2 flex-auto justify-center">
-            <div className="text-2xl font-bold"> Total: {totalPrice}</div>
+            <div className="text-2xl font-bold text-white"> Total: {totalPrice}</div>
           </div>
           <div className="text-1xl badge badge-ghost my-2 flex justify-center font-bold">
             {totalItems} Items
           </div>
           <button
-            className="btn-primary btn-block btn"
+            className="bg-yellow-300 text-black btn-block btn"
             onClick={() => {
               navigate("/orders/verify")
             }}

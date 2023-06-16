@@ -31,7 +31,7 @@ const Account = () => {
       <div className="flex flex-col md:flex-row">
 
         {user && <AccountForm user={user} />}
-        <button className="btn-primary btn self-start m-9" onClick={() => handleLogout()}>
+        <button className="btn-error btn self-start m-9" onClick={() => handleLogout()}>
           logout
         </button>
       </div>
