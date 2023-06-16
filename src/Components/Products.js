@@ -145,7 +145,7 @@ export const Products = ({ currentProducts, wishlist }) => {
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>
-                <h2 className="text-lg font-bold min-h-full hover:text-base-200">
+                <h2 className="text-lg font-bold min-h-full overflow-hidden hover:text-base-200">
                   {product.name}
                 </h2>
               </Link>
