@@ -24,7 +24,7 @@ const HomePageReviews = () => {
       {reviews.slice(0, 6).map((review) => {
         return (
           <div className="m-auto mb-2 mt-2 flex w-10/12 justify-center text-left">
-            <div className="glass mx-4 my-3 w-[1500px] rounded-lg p-4 backdrop-blur">
+            <div className="glass mx-4 my-3 max-w-xl rounded-lg p-4 backdrop-blur">
               <h2 className="mb-2 text-4xl font-bold capitalize">
                 {review.user.username}
               </h2>

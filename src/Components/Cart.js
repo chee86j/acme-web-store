@@ -37,13 +37,12 @@ const Cart = () => {
           ))}
         </div>
         <div
-          className="card glass fixed mb-4 mt-4 w-64 p-4"
-          style={{ height: "150px", right: 15 }}
+          className="card glass fixed mb-4 mt-4 w-64 p-4 h-36 right-4"
         >
           <div className="badge badge-ghost my-2 flex-auto justify-center">
             <div className="text-2xl font-bold"> Total: {totalPrice}</div>
           </div>
-          <div className="text-1xl badge badge-ghost my-2 my-2 flex justify-center font-bold">
+          <div className="text-1xl badge badge-ghost my-2 flex justify-center font-bold">
             {totalItems} Items
           </div>
           <button

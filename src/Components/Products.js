@@ -108,10 +108,10 @@ const PaginatedProducts = () => {
         previousLabel="< previous"
         renderOnZeroPageCount={null}
         className="join flex justify-center"
-        activeClassName="btn-sm join-item bg-accent"
-        pageClassName="btn-sm join-item"
-        previousClassName="btn-sm join-item bg-primary"
-        nextClassName="btn-sm join-item bg-primary"
+        activeClassName="join-item bg-base-200"
+        pageClassName="btn-sm join-item text-lg"
+        previousClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
+        nextClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
       />
     </div>
   )
