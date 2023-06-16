@@ -28,7 +28,7 @@ const HomePageReviews = () => {
               <h2 className="mb-2 text-4xl font-bold capitalize">
                 {review.user.username}
               </h2>
-              <div className="mx-6 text-2xl">{review.product.name}</div>
+              <div className="mx-6 text-2xl"><Link to={`/products/${review.product.id}`}>{review.product.name}</Link></div>
               <div className="mx-10 font-sans text-xl italic">
                 "{review.description}"!
               </div>
