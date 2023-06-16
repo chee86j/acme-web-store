@@ -219,7 +219,7 @@ const Orders = () => {
 
   return (
     <div>
-      <h1>Orders</h1>
+      <h1 className="ml-4">Orders</h1>
       {auth.id && <LogedIn />}
       {!auth.id && <NotLogedIn />}
     </div>

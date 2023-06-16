@@ -9,26 +9,30 @@ import { useDispatch, useSelector } from "react-redux"
 import { fetchReviews } from "../../store"
 
 const HomePageReviews = () => {
-  const {reviews} = useSelector((state) => state.reviews)
+  const { reviews } = useSelector((state) => state.reviews)
 
   const dispatch = useDispatch()
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(fetchReviews())
-  },[])
+  }, [])
 
   console.log(reviews)
-
+  // m-auto mb-2 mt-2 flex w-10/12 justify-center text-center
   return (
-    <div className="flex flex-col items-center">
-      <div className="font-3d text-9xl text-secondary">
-        Reviews
-      </div>
+    <div className="flex flex-col items-center ">
+      <div className="font-3d text-9xl text-secondary">Reviews</div>
       {reviews.slice(0, 6).map((review) => {
         return (
-          <div className="glass m-4 w-[1500px] rounded-lg p-4 backdrop-blur">
-            <h2 className="text-4xl">{review.user.username}</h2>
-            <div className="text-2xl">{review.product.name}</div>
-            <div>{review.description}</div>
+          <div className="m-auto mb-2 mt-2 flex w-10/12 justify-center text-left">
+            <div className="glass mx-4 my-3 w-[1500px] rounded-lg p-4 backdrop-blur">
+              <h2 className="mb-2 text-4xl font-bold capitalize">
+                {review.user.username}
+              </h2>
+              <div className="mx-6 text-2xl">{review.product.name}</div>
+              <div className="mx-10 font-sans text-xl italic">
+                "{review.description}"!
+              </div>
+            </div>
           </div>
         )
       })}

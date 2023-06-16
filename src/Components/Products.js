@@ -77,7 +77,7 @@ const PaginatedProducts = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="xl:btn-xl btn-ghost join-item btn mt-6 flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
+          className="w-80 xl:btn-xl btn-ghost join-item btn mt-6 flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         >
           <option value="">All Categories</option>
           <option value="Category1">Category 1</option>
