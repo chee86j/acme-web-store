@@ -12,7 +12,7 @@ const AdminPage = () => {
     </div>)
   }
   return (
-    <div className="">
+    <div className="bg-base-100">
       <div className="drawer md:drawer-open">
         <input id="adminSidebar" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content flex flex-col">
