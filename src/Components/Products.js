@@ -10,6 +10,7 @@ import AddToCartButton from "./AddToCartButton"
 import WishListButton from "./ui/WishListButton"
 import { useParallax } from "react-scroll-parallax"
 import { fetchProducts, getWishlist } from "../store"
+import { SearchIcon } from "lucide-react"
 
 const PaginatedProducts = () => {
   const { products, wishlist } = useSelector((state) => state.products);
@@ -77,7 +78,7 @@ const PaginatedProducts = () => {
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="xl:btn-xl btn-ghost join-item btn mt-6 flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
+          className="w-80 xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
         >
           <option value="">All Categories</option>
           <option value="Category1">Category 1</option>
@@ -86,13 +87,22 @@ const PaginatedProducts = () => {
         </select>
 
         {/* Search input */}
+        <div className="join">
+          <div className="btn btn-square join-item" disabled>
+            <SearchIcon size={24} className="text-black" />
+          </div>
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search"
-          className="xl:btn-xl btn-ghost join-item btn mt-6 flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
-        />
+            className="xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
+          /
+          >
+
+        </div>
+
+
       </div>
 
       {/* Display filtered products */}
@@ -135,7 +145,7 @@ export const Products = ({ currentProducts, wishlist }) => {
             </figure>
             <div className="card-body p-2">
               <Link to={`/products/${product.id}`}>
-                <h2 className="text-lg font-bold min-h-full hover:text-base-200">
+                <h2 className="text-lg font-bold min-h-full overflow-hidden hover:text-base-200">
                   {product.name}
                 </h2>
               </Link>

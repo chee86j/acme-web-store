@@ -1,25 +1,30 @@
 export const cartTotal = (cartArr) => {
-    let total = 0
+  let total = 0
   if (!cartArr) return total
-    if(cartArr.length > 0){
-        for (let item of cartArr) {
-          total += parseInt(item.product.price) * item.quantity
-        }
+  if (cartArr.length > 0) {
+    for (let item of cartArr) {
+      total += parseInt(item.product.price) * item.quantity
     }
-    return total
+  }
+  // to convert to USD
+  const formattedTotal = total.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+  })
+
+  return formattedTotal
 }
 
 export const cartQuantity = (cartArr) => {
-    let quantity = 0
+  let quantity = 0
   if (!cartArr) return quantity
-    if (cartArr.length > 0){
-        for (let item of cartArr) {
-          quantity += item.quantity
-        }
+  if (cartArr.length > 0) {
+    for (let item of cartArr) {
+      quantity += item.quantity
     }
-    return quantity
+  }
+  return quantity
 }
-
 
 export const getAverageRating = (reviews) => {
   if (!reviews || reviews.length === 0) return 0
@@ -44,8 +49,8 @@ export const passwordValidator = (password) => {
 }
 
 export const usernameValidator = (username) => {
-  if(username.match(/^[A-Za-z][A-Za-z0-9_]{7,29}$/)){
-    return true;
+  if (username.match(/^[A-Za-z][A-Za-z0-9_]{7,29}$/)) {
+    return true
   }
-  return false;
+  return false
 }

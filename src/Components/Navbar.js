@@ -31,7 +31,7 @@ function Navbar({ auth }) {
         </NavLink>
         {auth.isAdmin && (
           <NavLink
-            to={"/admin/products"}
+            to={"/admin"}
             className={({ isActive, isPending }) =>
               `text-md btn-ghost btn-xs btn normal-case md:btn-md ${
                 isActive ? "btn-active" : ""

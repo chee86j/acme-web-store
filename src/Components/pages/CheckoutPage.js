@@ -82,7 +82,7 @@ const CheckoutPage = () => {
   const OrderCreated = ({props}) => {
     console.log(props);
     return(
-      <div>
+      <div className="p-4">
         <h1 className="bg-gradient-to-r from-success to-accent bg-clip-text text-9xl font-extrabold text-transparent">
           Order Created
         </h1>

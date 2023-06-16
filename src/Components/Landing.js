@@ -6,9 +6,7 @@ import { fetchReviews } from "../store"
 import HomePageReviews from "./ui/homePageReviews"
 import { useParallax } from "react-scroll-parallax"
 
-
 const Landing = () => {
-
   const dispatch = useDispatch()
   const { ref } = useParallax({ speed: 50 })
 
@@ -25,12 +23,14 @@ const Landing = () => {
         perferendis et! Expedita excepturi perspiciatis similique ipsum amet
         totam nulla sapiente!
       </p>
-      <div className="skew-y-2 bg-gradient-to-r from-primary to-secondary h-[600px] my-16">
-        <h1 className="mt-12 flex justify-center text-4xl -skew-y-2">Popular Products</h1>
-        <HomeProducts/>
+      <div className="my-16 h-[600px] skew-y-2 bg-gradient-to-r from-primary to-secondary">
+        <h1 className="mt-12 flex -skew-y-2 justify-center stroke-black text-4xl font-extrabold">
+          Popular Products
+        </h1>
+        <HomeProducts />
       </div>
       <div>
-        <HomePageReviews/>
+        <HomePageReviews />
       </div>
     </div>
   )
