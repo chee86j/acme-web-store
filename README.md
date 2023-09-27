@@ -33,6 +33,15 @@ Before you begin, ensure you have the following installed:
 - [Stripe] API keys (for payment processing)
 - [Nodemailer] API keys (for email functionality)
 
+- create a `.env` file in the root directory and add the following environment variables:
+  [DATABASE_URL] = your_postgresql_connection_string
+  [JWT_SECRET] = your_jwt_secret
+  [STRIPE_SECRET_KEY] = your_stripe_secret_key
+  [EMAIL_HOST] = your_email_host
+  [EMAIL_PORT] = your_email_port
+  [EMAIL_USERNAME] = your_email_username
+  [EMAIL_PASSWORD] = your_email_password
+
 ### Installation & Local Deployment
 
 - run `npm install && npm run build:dev` in the root directory
