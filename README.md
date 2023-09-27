@@ -1,26 +1,42 @@
-# Basic Features
+# ACME Web Store
 
-- A user should be able to see products
-- A logged in user should be able to
-  - see the items in their cart
-  - add a new product to their cart
-  - remove an item from their cart
-  - create an order
-- A user should be able to see their orders
-- A user should be able to create an account
-- A user should be able to see their past orders
-- A non-logged in user should be able to add to their cart and have those items added to their cart after authenticating
-- A user should be able to review a product
-- A user should be able to update their profile
-- An administrator should be able to add a new product
+## Overview
 
-# Bonus Features
-- A user should be able to search for products
-- A user should be able to create a wish list
-- A user should be able to checkout using stripe
-- A user should be able to add a shipping address
-- A user should be able to upload an avatar to their profile
-- An administrator should be able to add a coupon code
-- A user should be able to use a coupon code
+Acme Web Store, the comprehensive white-label ready e-commerce app designed to deliver a seamless and engaging shopping experience. Whether you're a customer or a developer, Acme Web Store has something extraordinary to offer.
 
+For customers, Acme Web Store provides an extensive selection of products across multiple categories, ensuring that you can find exactly what you need. With an intuitive user interface, secure transactions powered by Stripe, and personalized product recommendations, your shopping experience will be convenient and tailored to your preferences. Effortless cart management and streamlined order creation further enhance the convenience and satisfaction of your online shopping journey. Plus, our exceptional customer support team is always ready to assist you every step of the way.
 
+Developers will find Acme Web Store a powerful platform to build exceptional e-commerce solutions. Leveraging the cutting-edge PERN stack, the app offers a scalable foundation and seamless integration with essential services like Stripe for secure payments. The responsive frontend built with React and Tailwind CSS empowers developers to create stunning user interfaces that align with their branding. With extensive customization options, comprehensive documentation, and a robust debugging process, developers can confidently build and extend Acme Web Store to create unique and reliable e-commerce experiences.
+
+![Acme Web Store](src/Components/assets/AcmeWebStore.gif)
+
+**Key Features:**
+
+- **White-Label E-Commerce:**
+  Tailor the platform to match your brand's identity and unique requirements.
+- **Responsive Design:**
+  Crafted using Tailwind CSS, our app offers a mobile-friendly and visually appealing interface.
+- **Technology Stack:**
+  Built with the PERN stack (PostgreSQL, Express.js, React, Node.js), ensuring scalability and robustness.
+- **Secure Payments:**
+  Enable secure transactions through Stripe payment integration.
+- **Admin Capabilities:**
+  Admins enjoy comprehensive features, including inventory management, order processing, user analytics, and more.
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- [Node.js](https://nodejs.org/)
+- [npm](https://www.npmjs.com/)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Stripe] API keys (for payment processing)
+- [Nodemailer] API keys (for email functionality)
+
+### Installation & Local Deployment
+
+- run `npm install && npm run build:dev` in the root directory
+- create and connect your PostgreSQL database `acme_shopping_db`
+- run `npm run dev:client` in the root directory
+- run `npm run dev:server` in the root directory
+- navigate to `http://localhost:3000/` in your browser
