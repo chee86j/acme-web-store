@@ -4,11 +4,11 @@
 
 Acme Web Store, the comprehensive white-label ready e-commerce app designed to deliver a seamless and engaging shopping experience. Whether you're a customer or a developer, Acme Web Store has something extraordinary to offer.
 
+![Acme Web Store](src/Components/assets/AcmeWebStore.gif)
+
 For customers, Acme Web Store provides an extensive selection of products across multiple categories, ensuring that you can find exactly what you need. With an intuitive user interface, secure transactions powered by Stripe, and personalized product recommendations, your shopping experience will be convenient and tailored to your preferences. Effortless cart management and streamlined order creation further enhance the convenience and satisfaction of your online shopping journey. Plus, our exceptional customer support team is always ready to assist you every step of the way.
 
 Developers will find Acme Web Store a powerful platform to build exceptional e-commerce solutions. Leveraging the cutting-edge PERN stack, the app offers a scalable foundation and seamless integration with essential services like Stripe for secure payments. The responsive frontend built with React and Tailwind CSS empowers developers to create stunning user interfaces that align with their branding. With extensive customization options, comprehensive documentation, and a robust debugging process, developers can confidently build and extend Acme Web Store to create unique and reliable e-commerce experiences.
-
-![Acme Web Store](src/Components/assets/AcmeWebStore.gif)
 
 **Key Features:**
 
