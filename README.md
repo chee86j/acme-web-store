@@ -10,6 +10,8 @@ For customers, Acme Web Store provides an extensive selection of products across
 
 Developers will find Acme Web Store a powerful platform to build exceptional e-commerce solutions. Leveraging the cutting-edge PERN stack, the app offers a scalable foundation and seamless integration with essential services like Stripe for secure payments. The responsive frontend built with React and Tailwind CSS empowers developers to create stunning user interfaces that align with their branding. With extensive customization options, comprehensive documentation, and a robust debugging process, developers can confidently build and extend Acme Web Store to create unique and reliable e-commerce experiences.
 
+Check out the Live Site here https://acme-web-store.up.railway.app/
+
 **Key Features:**
 
 - **White-Label E-Commerce:**
