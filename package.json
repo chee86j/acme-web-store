@@ -30,7 +30,10 @@
     "react-paginate": "^8.2.0",
     "react-scroll-parallax": "^3.4.2",
     "sequelize": "^6.25.3",
-    "stripe": "^12.8.0"
+    "stripe": "^12.8.0",
+    "cors": "^2.8.5",
+    "express-session": "^1.17.3",
+    "helmet": "^7.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.19.6",
