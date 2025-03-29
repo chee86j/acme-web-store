@@ -4,21 +4,35 @@ import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Link, useNavigate } from "react-router-dom"
 import { getAverageRating } from "../../util"
+import { Package, Loader, Calendar, Box, MapPin, Truck } from 'react-feather'
 import Rating from "../ui/Rating"
+import Spinner from "../Spinner"
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const formatPrice = (price) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(price)
+}
 
 const Orders = () => {
   const navigate = useNavigate()
-
-  const handleSignUp = () => {
-    navigate("/account/create")
-  }
-
   const { auth } = useSelector((state) => state)
-
   const [orders, setOrders] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   const fetchOrders = async () => {
     try {
+      setIsLoading(true)
       const token = window.localStorage.getItem("token")
       const response = await axios.get("/api/orders", {
         headers: {
@@ -27,179 +41,263 @@ const Orders = () => {
       })
       setOrders(response.data)
     } catch (error) {
-      console.log(error)
+      setError("Failed to fetch orders. Please try again.")
+      console.error("Error fetching orders:", error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchOrders()
+    if (auth.id) {
+      fetchOrders()
+    } else {
+      setIsLoading(false)
+    }
   }, [auth])
 
-  console.log(orders)
+  const LoggedIn = () => {
+    if (isLoading) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[400px]">
+          <Spinner />
+          <p className="mt-4 text-base-content/70">Loading your orders...</p>
+        </div>
+      )
+    }
 
-  const LogedIn = () => {
+    if (error) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[400px] p-4">
+          <Package size={48} className="text-error mb-4" />
+          <p className="text-error text-center">{error}</p>
+          <button 
+            className="btn btn-primary mt-4"
+            onClick={fetchOrders}
+          >
+            Try Again
+          </button>
+        </div>
+      )
+    }
+
+    if (orders.length === 0) {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-[400px] p-4">
+          <Package size={48} className="text-base-content/50 mb-4" />
+          <h2 className="text-xl font-semibold mb-2">No orders yet</h2>
+          <p className="text-base-content/70 text-center mb-4">
+            Start shopping to create your first order!
+          </p>
+          <Link to="/" className="btn btn-primary">
+            Browse Products
+          </Link>
+        </div>
+      )
+    }
+
     return (
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Order Number</th>
-            <th>Products</th>
-            <th>Date Placed</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {orders.map((order) => {
-            return (
-              <tr key={uuidv4()}>
-                <td>{order.lookUpId}</td>
-                <td>{order.lineItems.length}</td>
-                <td>{order.createdAt}</td>
-                <td>shipped</td>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th>Order Number</th>
+              <th>Date</th>
+              <th>Items</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {orders.map((order) => (
+              <tr key={order.id}>
+                <td className="font-medium">{order.lookUpId}</td>
+                <td>{formatDate(order.createdAt)}</td>
+                <td>{order.lineItems.length} items</td>
+                <td>
+                  <span className="badge badge-success">Shipped</span>
+                </td>
                 <td>
                   <button
-                    className="btn"
+                    className="btn btn-ghost btn-sm"
                     onClick={() => window[order.id].showModal()}
                   >
                     View Details
                   </button>
                   <dialog id={order.id} className="modal">
-                    <div className="text-white">
-                      <form
-                        method="dialog"
-                        className="modal-box"
-                        id="myCoolBackground"
-                      >
-                        <div className="m-2 flex">
-                          <div className="m-2 rounded-lg p-6 backdrop-blur">
-                            <h1>Order Number {order.lookUpId}</h1>
-                            <h2>
-                              Placed By {order.firstName} {order.lastName}
-                            </h2>
-                            <h2>Created at: {order.createdAt}</h2>
+                    <div className="modal-box max-w-3xl">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 text-lg font-semibold">
+                            <Box size={20} />
+                            Order #{order.lookUpId}
                           </div>
-                          <div className="m-2 rounded-lg p-6 backdrop-blur">
-                            <h1>Shippng To</h1>
-                            <h2>{order.street}</h2>
-                            <h2>
-                              {order.city}, {order.state} {order.zip}
-                            </h2>
-                            <h2>Arriving in: 2 days</h2>
+                          <div className="flex items-center gap-2 text-base-content/70">
+                            <Calendar size={16} />
+                            {formatDate(order.createdAt)}
+                          </div>
+                          <div className="flex items-center gap-2 text-base-content/70">
+                            <Truck size={16} />
+                            Arriving in 2 days
                           </div>
                         </div>
-                        <h1 className="mx-auto text-lg">Order Items</h1>
-                        <div>
-                          {order.lineItems.map((item) => {
-                            return (
-                              <div
-                                key={uuidv4()}
-                                className="card card-side m-2 shadow-xl backdrop-blur"
-                              >
-                                <figure>
-                                  <img
-                                    src={item.product.imageURL}
-                                    alt={item.product.name}
-                                  />
-                                </figure>
-                                <div className="card-body">
-                                  <h2 className="card-title">
-                                    {item.product.name}
-                                  </h2>
-                                  <h3>Quantity {item.quantity}</h3>
-                                  <h3>{item.product.price}</h3>
-                                </div>
+                        
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2 font-semibold">
+                            <MapPin size={20} />
+                            Shipping Address
+                          </div>
+                          <div className="text-base-content/70">
+                            {order.firstName} {order.lastName}<br />
+                            {order.street}<br />
+                            {order.city}, {order.state} {order.zip}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Order Items</h3>
+                        {order.lineItems.map((item) => (
+                          <div key={uuidv4()} className="flex gap-4 items-center p-4 bg-base-200 rounded-lg">
+                            <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                              <img
+                                src={item.product.imageURL}
+                                alt={item.product.name}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div className="flex-grow">
+                              <h4 className="font-medium">{item.product.name}</h4>
+                              <div className="text-sm text-base-content/70">
+                                Quantity: {item.quantity}
                               </div>
-                            )
-                          })}
-                        </div>
-                        <div className="modal-action">
+                            </div>
+                            <div className="text-right font-medium">
+                              {formatPrice(item.product.price)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="modal-action">
+                        <form method="dialog">
                           <button className="btn">Close</button>
-                        </div>
-                      </form>
+                        </form>
+                      </div>
                     </div>
                   </dialog>
                 </td>
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     )
   }
 
-  const NotLogedIn = () => {
+  const NotLoggedIn = () => {
     const [pageState, setPageState] = useState("form")
-    const [order, setOrder] = useState({})
+    const [order, setOrder] = useState(null)
+    const [isSearching, setIsSearching] = useState(false)
+    const [searchError, setSearchError] = useState(null)
 
     const Form = () => {
-      const findOrder = async (event) => {
-        event.preventDefault()
-        const response = await axios.get(`/api/orders/${orderId}`, {
-          headers: {
-            authorization: email,
-          },
-        })
-        setOrder(response.data)
-        console.log(response.data)
-        setPageState("found")
-      }
-
       const [orderId, setOrderId] = useState("")
       const [email, setEmail] = useState("")
+
+      const findOrder = async (event) => {
+        event.preventDefault()
+        setIsSearching(true)
+        setSearchError(null)
+
+        try {
+          const response = await axios.get(`/api/orders/${orderId}`, {
+            headers: {
+              authorization: email,
+            },
+          })
+          setOrder(response.data)
+          setPageState("found")
+        } catch (error) {
+          setSearchError("Order not found. Please check your order number and email.")
+          console.error("Error finding order:", error)
+        } finally {
+          setIsSearching(false)
+        }
+      }
+
       return (
-        <div className="shadow-2x m-auto mb-4 mt-4 flex w-3/4 max-w-md justify-center rounded-xl border-2 border-secondary bg-base-200">
-          <div className="card w-full p-3">
-            <h2 className="card-title">
-              <div className="bg-gradient-to-r from-secondary to-accent bg-clip-text text-3xl font-extrabold text-transparent">
-                ORDER STATUS
-              </div>
-            </h2>
+        <div className="max-w-lg mx-auto p-6">
+          <div className="card bg-base-200 shadow-xl">
             <div className="card-body">
-              <div className="flex flex-row">
-                <span className="flex-grow">
-                  Did You Check Out As A Guest? Or do you just want to check
-                  your Order Status without signing in?
-                </span>
-                <div className="avatar self-end">
-                  <div className="mask mask-squircle mx-3 my-3 h-20 w-20 object-fill">
-                    <img
-                      src={
-                        "https://static.wikia.nocookie.net/supermarioglitchy4/images/3/3a/Mega_Mushroom_Artwork_-_New_Super_Mario_Bros.png"
-                      }
-                      alt="mushroom"
-                    />
-                  </div>
+              <div className="flex items-center gap-4 mb-6">
+                <Package size={32} className="text-primary" />
+                <h2 className="card-title text-2xl">Track Your Order</h2>
+              </div>
+
+              <form onSubmit={findOrder} className="space-y-6">
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Order Number</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="input input-bordered"
+                    value={orderId}
+                    onChange={(e) => setOrderId(e.target.value)}
+                    placeholder="Enter your order number"
+                    required
+                  />
                 </div>
-              </div>
-              <div>
-                Your ACME Web Store Grants You Acceess To All Of ACME, Including
-                The Shop, Learning System, and Wishlists.{" "}
-              </div>
-              <form
-                className="shadow-2x m-auto mb-4 mt-4 flex w-3/4 flex-col flex-wrap content-center justify-center "
-                onSubmit={findOrder}
-              >
-                <h1 class="my-3 text-center">ORDER NUMBER</h1>
-                <input
-                  value={orderId}
-                  onChange={(event) => setOrderId(event.target.value)}
-                />
-                <h1 class="my-3 text-center">EMAIL</h1>
-                <input
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-                <button class="btn-secondary btn mx-5 my-5 md:btn-sm">
-                  Find Order
-                </button>
-                <h1 class="mt-2">NEED AN ACME ACCOUNT?</h1>
-                <button
-                  className="btn-secondary btn mx-5 my-5 md:btn-sm"
-                  onClick={() => handleSignUp()}
+
+                <div className="form-control">
+                  <label className="label">
+                    <span className="label-text">Email Address</span>
+                  </label>
+                  <input
+                    type="email"
+                    className="input input-bordered"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
+                    required
+                  />
+                </div>
+
+                {searchError && (
+                  <div className="alert alert-error">
+                    <p>{searchError}</p>
+                  </div>
+                )}
+
+                <button 
+                  type="submit" 
+                  className="btn btn-primary w-full"
+                  disabled={isSearching}
                 >
-                  Sign Up Here
+                  {isSearching ? (
+                    <>
+                      <Loader size={16} className="animate-spin mr-2" />
+                      Searching...
+                    </>
+                  ) : (
+                    'Track Order'
+                  )}
                 </button>
               </form>
+
+              <div className="divider">OR</div>
+
+              <div className="text-center">
+                <p className="mb-4">Create an account to track all your orders in one place</p>
+                <button
+                  className="btn btn-outline btn-primary"
+                  onClick={() => navigate("/account/create")}
+                >
+                  Sign Up Now
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -207,21 +305,98 @@ const Orders = () => {
     }
 
     const OrderFound = () => {
-      return <h1>order found</h1>
+      if (!order) return null
+
+      return (
+        <div className="max-w-2xl mx-auto p-6">
+          <div className="card bg-base-200 shadow-xl">
+            <div className="card-body">
+              <div className="flex items-center gap-4 mb-6">
+                <Package size={32} className="text-primary" />
+                <h2 className="card-title text-2xl">Order Details</h2>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-lg font-semibold">
+                    <Box size={20} />
+                    Order #{order.lookUpId}
+                  </div>
+                  <div className="flex items-center gap-2 text-base-content/70">
+                    <Calendar size={16} />
+                    {formatDate(order.createdAt)}
+                  </div>
+                  <div className="flex items-center gap-2 text-base-content/70">
+                    <Truck size={16} />
+                    Arriving in 2 days
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <MapPin size={20} />
+                    Shipping Address
+                  </div>
+                  <div className="text-base-content/70">
+                    {order.firstName} {order.lastName}<br />
+                    {order.street}<br />
+                    {order.city}, {order.state} {order.zip}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Order Items</h3>
+                {order.lineItems.map((item) => (
+                  <div key={uuidv4()} className="flex gap-4 items-center p-4 bg-base-300 rounded-lg">
+                    <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
+                      <img
+                        src={item.product.imageURL}
+                        alt={item.product.name}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="flex-grow">
+                      <h4 className="font-medium">{item.product.name}</h4>
+                      <div className="text-sm text-base-content/70">
+                        Quantity: {item.quantity}
+                      </div>
+                    </div>
+                    <div className="text-right font-medium">
+                      {formatPrice(item.product.price)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-between items-center mt-6">
+                <button
+                  className="btn btn-ghost"
+                  onClick={() => setPageState("form")}
+                >
+                  Track Another Order
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => navigate("/account/create")}
+                >
+                  Create Account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
     }
 
-    if (pageState === "form") {
-      return <Form />
-    } else if (pageState === "found") {
-      return <OrderFound />
-    }
+    return pageState === "form" ? <Form /> : <OrderFound />
   }
 
   return (
-    <div>
-      <h1 className="ml-4">Orders</h1>
-      {auth.id && <LogedIn />}
-      {!auth.id && <NotLogedIn />}
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">My Orders</h1>
+      {auth.id ? <LoggedIn /> : <NotLoggedIn />}
     </div>
   )
 }
