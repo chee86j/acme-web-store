@@ -20,7 +20,10 @@ const Cart = () => {
     }
   }, [])
 
-  const cartItems = cart && cart.cartItems ? cart.cartItems : []
+  const cartItems = cart && cart.cartItems ? [...cart.cartItems].sort((a, b) => {
+    // Sort by product ID to maintain consistent order
+    return a.product.id.localeCompare(b.product.id)
+  }) : []
   const totalPrice = cartTotal(cart.cartItems)
   const totalItems = cartQuantity(cart.cartItems)
 
@@ -33,7 +36,10 @@ const Cart = () => {
       <div className="flex flex-row">
         <div className="m-4 mr-64 flex flex-shrink flex-wrap">
           {cartItems.map((product) => (
-            <CartItem key={product.product.id} product={product} />
+            <CartItem 
+              key={`${product.product.id}-${product.id}`} 
+              product={product} 
+            />
           ))}
         </div>
         <div
