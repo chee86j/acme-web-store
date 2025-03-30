@@ -2,7 +2,7 @@
 
 ## Overview
 
-Acme Web Store, the comprehensive white-label ready e-commerce app designed to deliver a seamless and engaging shopping experience. Whether you're a customer or a developer, Acme Web Store has something extraordinary to offer.
+Acme Web Store, the comprehensive white-label ready e-commerce app designed to deliver a seamless and engaging shopping experience. Whether you're a customer or a developer, Acme Web Store has something extraordinary to offer.The application provides a complete shopping experience with user authentication, product management, cart functionality, and secure payment processing.
 
 ![Acme Web Store](src/Components/assets/AcmeWebStore.gif)
 
@@ -10,20 +10,51 @@ For customers, Acme Web Store provides an extensive selection of products across
 
 Developers will find Acme Web Store a powerful platform to build exceptional e-commerce solutions. Leveraging the cutting-edge PERN stack, the app offers a scalable foundation and seamless integration with essential services like Stripe for secure payments. The responsive frontend built with React and Tailwind CSS empowers developers to create stunning user interfaces that align with their branding. With extensive customization options, comprehensive documentation, and a robust debugging process, developers can confidently build and extend Acme Web Store to create unique and reliable e-commerce experiences.
 
-Check out the Live Site here https://acme-web-store.up.railway.app/
+Check out the Live Demo here https://acme-web-store.up.railway.app/
 
-**Key Features:**
+### Features
 
-- **White-Label E-Commerce:**
-  Tailor the platform to match your brand's identity and unique requirements.
-- **Responsive Design:**
-  Crafted using Tailwind CSS, our app offers a mobile-friendly and visually appealing interface.
-- **Technology Stack:**
-  Built with the PERN stack (PostgreSQL, Express.js, React, Node.js), ensuring scalability and robustness.
-- **Secure Payments:**
-  Enable secure transactions through Stripe payment integration.
-- **Admin Capabilities:**
-  Admins enjoy comprehensive features, including inventory management, order processing, user analytics, and more.
+- **User Management**
+  - User authentication and authorization
+  - Guest shopping support
+  - Admin dashboard for store management
+
+- **Product Management**
+  - Product catalog with categories
+  - Product search and filtering
+  - Admin product management interface
+  - Product reviews and ratings
+
+- **Shopping Features**
+  - Shopping cart with quantity management
+  - Wishlist functionality
+  - Order history and tracking
+  - Secure checkout process
+
+- **Admin Dashboard**
+  - User management
+  - Product inventory control
+  - Order processing
+  - Sales analytics
+
+- **Technical Features**
+  - Responsive design with Tailwind CSS
+  - Redux state management
+  - RESTful API architecture
+  - Stripe payment integration
+  - Email notifications
+
+- **Security Features**
+  - JWT-based authentication with 1-hour expiration and automatic refresh
+  - HTTP-only cookies with secure flags and SameSite policy
+  - Comprehensive security headers (HSTS, CSP, X-Frame-Options, XSS Protection)
+  - Input validation and sanitization with XSS and SQL injection prevention
+  - Secure session management with 1-hour lifetime
+  - Strict CORS policy with configured origins and methods
+  - Environment variable protection for sensitive data
+  - Secure payment processing with Stripe
+  - Production-safe error handling and logging
+  - Protected admin routes with role-based access control
 
 ### Prerequisites
 
@@ -35,7 +66,11 @@ Before you begin, ensure you have the following installed:
 - [Stripe] API keys (for payment processing)
 - [Nodemailer] API keys (for email functionality)
 
-- create a `.env` file in the root directory and add the following environment variables:
+### Environment Setup
+
+Create a `.env` file in the root directory with the following variables:
+
+```
   [DATABASE_URL] = your_postgresql_connection_string
   [JWT_SECRET] = your_jwt_secret
   [STRIPE_SECRET_KEY] = your_stripe_secret_key
@@ -43,11 +78,24 @@ Before you begin, ensure you have the following installed:
   [EMAIL_PORT] = your_email_port
   [EMAIL_USERNAME] = your_email_username
   [EMAIL_PASSWORD] = your_email_password
+```
 
-### Installation & Local Deployment
+### Installation & Local Development
 
-- run `npm install && npm run build:dev` in the root directory
-- create and connect your PostgreSQL database `acme_shopping_db`
-- run `npm run dev:client` in the root directory
-- run `npm run dev:server` in the root directory
-- navigate to `http://localhost:3000/` in your browser
+1. Install dependencies:
+```bash
+npm install
+npm run build:dev
+```
+
+2. Database setup:
+- Create a PostgreSQL database named `acme_shopping_db`
+- Connect to your database using the DATABASE_URL in your .env file
+
+3. Start the development servers from the root directory:
+```bash
+npm run dev:client  # Frontend server
+npm run dev:server  # Backend server
+```
+
+4. Access the application locally at `http://localhost:3000/`
