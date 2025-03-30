@@ -129,11 +129,11 @@ const PaginatedProducts = () => {
 
 export const Products = ({ currentProducts, wishlist }) => {
   return (
-    <div className="m-4 flex flex-shrink flex-wrap justify-center">
+    <div className="m-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center">
       {currentProducts.map((product) => {
         return (
           <div
-            className="card glass card-compact m-4 w-64 sm:card-normal"
+            className="card glass card-compact w-full max-w-[16rem] sm:card-normal"
             key={uuidv4()}
           >
             <figure className="min-h-12">

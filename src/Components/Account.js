@@ -28,16 +28,24 @@ const Account = () => {
 
   if (user && auth.id === user.id) {
     return (
-      <div className="flex flex-col md:flex-row">
-
-        {user && <AccountForm user={user} />}
-        <button className="btn-error btn self-start m-9" onClick={() => handleLogout()}>
-          logout
-        </button>
+      <div className="container mx-auto px-4 py-6">
+        <div className="flex flex-col gap-6">
+          {user && <AccountForm user={user} />}
+          <button 
+            className="btn btn-error w-full sm:w-auto self-center sm:self-start" 
+            onClick={() => handleLogout()}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     )
   } else {
-    return <div>Loading...</div>
+    return (
+      <div className="flex justify-center items-center min-h-[50vh]">
+        <div className="loading loading-spinner loading-lg"></div>
+      </div>
+    )
   }
 }
 

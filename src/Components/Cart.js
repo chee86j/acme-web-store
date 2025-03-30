@@ -75,12 +75,11 @@ const Cart = () => {
       <h1 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 text-center">Shopping Cart</h1>
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
         <div className="flex-grow">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4">
             {cartItems.map((product) => (
-              <CartItem 
-                key={`${product.product.id}-${product.id}`} 
-                product={product} 
-              />
+              <div className="w-full" key={`${product.product.id}-${product.id}`}>
+                <CartItem product={product} />
+              </div>
             ))}
           </div>
         </div>

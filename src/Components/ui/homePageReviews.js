@@ -16,27 +16,55 @@ const HomePageReviews = () => {
     dispatch(fetchReviews())
   }, [])
 
-  console.log(reviews)
-  // m-auto mb-2 mt-2 flex w-10/12 justify-center text-center
   return (
-    <div className="flex flex-col items-center ">
-      <div className="font-3d text-9xl text-secondary">Reviews</div>
-      {reviews.slice(0, 6).map((review) => {
-        return (
-          <div className="m-auto mb-2 mt-2 flex w-10/12 justify-center text-left">
-            <div className="glass mx-4 my-3 max-w-xl rounded-lg p-4 backdrop-blur">
-              <h2 className="mb-2 text-4xl font-bold capitalize">
-                {review.user.username}
-              </h2>
-              <div className="mx-6 text-2xl underline overflow-hidden"><Link to={`/products/${review.product.id}`}>{review.product.name}</Link></div>
-              <div className="mx-10 font-sans text-xl italic">
-                "{review.description}"!
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="font-3d text-4xl sm:text-6xl md:text-8xl text-secondary text-center mb-8">
+        Reviews
+      </h1>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        {reviews.slice(0, 6).map((review) => (
+          <div 
+            key={review.id || uuidv4()} 
+            className="card glass backdrop-blur hover:shadow-lg transition-shadow"
+          >
+            <div className="card-body p-4 sm:p-6">
+              <div className="flex items-start gap-3 mb-3">
+                <div className="avatar placeholder">
+                  <div className="bg-neutral text-neutral-content rounded-full w-10">
+                    <span className="text-lg">{review.user.username.charAt(0).toUpperCase()}</span>
+                  </div>
+                </div>
+                <div>
+                  <h2 className="text-lg sm:text-xl font-bold capitalize">
+                    {review.user.username}
+                  </h2>
+                  <Link 
+                    to={`/products/${review.product.id}`}
+                    className="text-sm sm:text-base text-primary hover:underline line-clamp-1"
+                  >
+                    {review.product.name}
+                  </Link>
+                </div>
+              </div>
+              
+              <div className="relative">
+                <span className="absolute top-0 left-0 text-4xl text-primary/20">"</span>
+                <blockquote className="pl-6 pr-4 py-2 text-sm sm:text-base italic">
+                  {review.description}
+                </blockquote>
+                <span className="absolute bottom-0 right-0 text-4xl text-primary/20">"</span>
+              </div>
+              
+              <div className="mt-3">
+                <Rating rating={review.rating} />
               </div>
             </div>
           </div>
-        )
-      })}
+        ))}
+      </div>
     </div>
   )
 }
+
 export default HomePageReviews

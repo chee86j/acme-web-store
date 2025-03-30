@@ -8,9 +8,7 @@ import WishListButton from "./WishListButton"
 import { useDispatch, useSelector } from "react-redux"
 
 const HomeProducts = () => {
-
   const { products, reviews } = useSelector((state) => state)
-
   const [popularProducts, setPopularProducts] = useState([])
 
   useEffect(() => {
@@ -22,48 +20,52 @@ const HomeProducts = () => {
   }, [products])
 
   return (
-    <div className="m-8 flex justify-start overflow-x-auto">
-      {popularProducts.map((product) => {
-        return (
+    <div className="container mx-auto px-4 py-6">
+      <h2 className="text-2xl sm:text-3xl font-bold mb-6">Popular Products</h2>
+      
+      <div className="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory">
+        {popularProducts.map((product) => (
           <div
-            className="card glass card-compact m-4 w-[500px] -skew-y-2"
+            className="card glass hover:shadow-xl transition-shadow duration-200 shrink-0 w-[280px] sm:w-[320px] snap-start"
             key={uuidv4()}
           >
-            <figure className="min-h-12 w-[300px]">
+            <figure className="relative pt-[100%]">
               <img
                 src={product.imageURL}
                 alt={product.name}
-                className="mask-square aspect-square h-full w-full"
+                className="absolute inset-0 w-full h-full object-cover"
+                loading="lazy"
               />
             </figure>
-            <div className="card-body p-2">
-              <Link to={`/products/${product.id}`}>
-                <h2 className="text-md min-h-full text-black hover:text-base-200">
+            
+            <div className="card-body p-4">
+              <Link 
+                to={`/products/${product.id}`}
+                className="hover:text-primary transition-colors"
+              >
+                <h3 className="font-semibold text-sm sm:text-base line-clamp-2 min-h-[2.5rem]">
                   {product.name}
-                </h2>
+                </h3>
               </Link>
-            </div>
-            <div className="card-actions flex flex-col">
-              <div className="flex w-full flex-row">
-                <div className="flex-none px-2">
+
+              <div className="mt-auto space-y-2">
+                <div className="flex items-center justify-between gap-2">
                   <Rating rating={getAverageRating(product.reviews)} />
+                  <div className="badge badge-ghost gap-1">
+                    <span className="text-sm font-semibold">$</span>
+                    <span className="font-semibold">{product.price}</span>
+                  </div>
                 </div>
-                <div className="grow"></div>
-                <div className="flex-none px-2">
-                  <span className="badge badge-ghost">
-                    <span className="text-lg font-bold">$</span>
-                    <span className="font-bold">{product.price}</span>
-                  </span>
+                
+                <div className="flex items-center justify-between gap-2 pt-2">
+                  <WishListButton product={product} />
+                  <AddToCartButton product={product} quantity={1} />
                 </div>
-              </div>
-              <div className="flex w-full flex-row items-center justify-center p-3">
-                <WishListButton product={product} />
-                <AddToCartButton product={product} quantity={1} />
               </div>
             </div>
           </div>
-        )
-      })}
+        ))}
+      </div>
     </div>
   )
 }

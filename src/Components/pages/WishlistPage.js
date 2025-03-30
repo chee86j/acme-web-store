@@ -17,86 +17,135 @@ function WishlistPage() {
     }, [])
 
     return (
-        <div className="flex flex-col items-center">
-            <h1 className="text-lg font-bold">Wish List</h1>
-            <table className="table p-3">
-                <thead>
-                    <tr>
-                        <th>Product</th>
-                        <th>Description | Category</th>
-                        <th>Price</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {wishlist.length > 0 &&
-                        wishlist.map((product) => {
-                            if (!product.product) return null
-                            return (
-                                <tr
-                                    key={product.productId}
-                                >
-                                    <td>
-                                        <div className="flex items-center space-x-3">
-
-                                            <div className="avatar">
-                                                <div className="mask mask-squircle h-12 w-12">
-                                                    <img
-                                                        src={product.product.imageURL}
-                                                        alt={product.product.name}
-                                                        loading="lazy"
-                                                    />
+        <div className="container mx-auto px-4 py-6">
+            <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center">My Wishlist</h1>
+            
+            {/* Desktop view */}
+            <div className="hidden md:block">
+                <table className="table w-full">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Description | Category</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {wishlist.length === 0 ? (
+                            <tr>
+                                <td colSpan="4" className="text-center py-8">
+                                    <p className="text-base-content/70">Your wishlist is empty</p>
+                                </td>
+                            </tr>
+                        ) : (
+                            wishlist.map((product) => {
+                                if (!product.product) return null;
+                                return (
+                                    <tr key={product.productId}>
+                                        <td>
+                                            <div className="flex items-center gap-3">
+                                                <div className="avatar">
+                                                    <div className="mask mask-squircle w-12 h-12">
+                                                        <img
+                                                            src={product.product.imageURL}
+                                                            alt={product.product.name}
+                                                            loading="lazy"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="font-semibold">{product.product.name}</div>
+                                                    <div className="text-sm opacity-50">{product.product.material}</div>
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <div className="line-clamp-2 text-sm">{product.product.description}</div>
+                                            <span className="badge badge-ghost badge-sm mt-1">
+                                                {product.product.category}
+                                            </span>
+                                        </td>
+                                        <td className="font-semibold">${product.product.price}</td>
+                                        <td>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    className="btn btn-neutral btn-sm"
+                                                    onClick={() => navigate(`/products/${product.productId}`)}
+                                                >
+                                                    View
+                                                </button>
+                                                <button
+                                                    className="btn btn-error btn-sm"
+                                                    onClick={() => handleRemove(product.productId)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
-                                            <div>
-                                                <div className="text-lg md:text-mdfont-bold">{product.product.name}</div>
-                                                <div className="text-sm opacity-50">
-                                                    {product.product.material}
-                                                </div>
+            {/* Mobile view */}
+            <div className="md:hidden space-y-4">
+                {wishlist.length === 0 ? (
+                    <div className="text-center py-8">
+                        <p className="text-base-content/70">Your wishlist is empty</p>
+                    </div>
+                ) : (
+                    wishlist.map((product) => {
+                        if (!product.product) return null;
+                        return (
+                            <div key={product.productId} className="card bg-base-200 shadow-lg">
+                                <div className="card-body p-4">
+                                    <div className="flex gap-4">
+                                        <div className="avatar">
+                                            <div className="mask mask-squircle w-20 h-20">
+                                                <img
+                                                    src={product.product.imageURL}
+                                                    alt={product.product.name}
+                                                    loading="lazy"
+                                                    className="w-full h-full object-cover"
+                                                />
                                             </div>
                                         </div>
-                                    </td>
-                                    <td>
-                                        <span className="w-4 text-ellipsis">
-                                            {product.product.description}
-                                        </span>
-                                        <br />
-                                        <span className="badge badge-ghost badge-sm">
-                                            {product.product.category}
-                                        </span>
-                                    </td>
-                                    <td className="text-lg">${product.product.price}</td>
-                                    <th>
-                                        <div className="flex flex-row justify-evenly">
-
-                                            <button
-                                                className="btn-neutral btn-xs btn mx-1 px-1"
-                                                onClick={() => {
-                                                    navigate(`/products/${product.productId}`)
-                                                }}
-
-                                            >
-                                                View
-                                            </button>
-                                            <button
-                                                className="btn-error btn-xs btn mx-1 px-1"
-                                                onClick={() => {
-                                                    handleRemove(product.productId)
-                                                }}
-
-                                            >
-                                                Remove
-                                            </button>
+                                        <div className="flex-1 min-w-0">
+                                            <h2 className="card-title text-lg mb-1">{product.product.name}</h2>
+                                            <p className="text-sm text-base-content/70 mb-1">{product.product.material}</p>
+                                            <div className="line-clamp-2 text-sm mb-2">{product.product.description}</div>
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="badge badge-ghost">{product.product.category}</span>
+                                                <span className="font-semibold">${product.product.price}</span>
+                                            </div>
+                                            <div className="card-actions justify-end pt-2 border-t border-base-300">
+                                                <button
+                                                    className="btn btn-neutral btn-sm"
+                                                    onClick={() => navigate(`/products/${product.productId}`)}
+                                                >
+                                                    View Details
+                                                </button>
+                                                <button
+                                                    className="btn btn-error btn-sm"
+                                                    onClick={() => handleRemove(product.productId)}
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
                                         </div>
-                                    </th>
-                                </tr>
-                            )
-                        })}
-                </tbody>
-            </table>
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })
+                )}
+            </div>
         </div>
-    )
+    );
 }
 
 export default WishlistPage

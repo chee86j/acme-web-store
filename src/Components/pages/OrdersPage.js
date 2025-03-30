@@ -97,101 +97,145 @@ const Orders = () => {
     }
 
     return (
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Order Number</th>
-              <th>Date</th>
-              <th>Items</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td className="font-medium">{order.lookUpId}</td>
-                <td>{formatDate(order.createdAt)}</td>
-                <td>{order.lineItems.length} items</td>
-                <td>
+      <div className="w-full">
+        {/* Desktop view */}
+        <div className="hidden md:block overflow-x-auto">
+          <table className="table w-full">
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Date</th>
+                <th>Items</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td className="font-medium">{order.lookUpId}</td>
+                  <td>{formatDate(order.createdAt)}</td>
+                  <td>{order.lineItems.length} items</td>
+                  <td>
+                    <span className="badge badge-success">Shipped</span>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-ghost btn-sm"
+                      onClick={() => window[order.id].showModal()}
+                    >
+                      View Details
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Mobile view */}
+        <div className="md:hidden space-y-4 px-4">
+          {orders.map((order) => (
+            <div key={order.id} className="card bg-base-200 shadow-xl">
+              <div className="card-body p-4">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Box size={16} />
+                    #{order.lookUpId}
+                  </h3>
                   <span className="badge badge-success">Shipped</span>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-ghost btn-sm"
-                    onClick={() => window[order.id].showModal()}
-                  >
-                    View Details
-                  </button>
-                  <dialog id={order.id} className="modal">
-                    <div className="modal-box max-w-3xl">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 text-lg font-semibold">
-                            <Box size={20} />
-                            Order #{order.lookUpId}
-                          </div>
-                          <div className="flex items-center gap-2 text-base-content/70">
-                            <Calendar size={16} />
-                            {formatDate(order.createdAt)}
-                          </div>
-                          <div className="flex items-center gap-2 text-base-content/70">
-                            <Truck size={16} />
-                            Arriving in 2 days
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <div className="flex items-center gap-2 font-semibold">
-                            <MapPin size={20} />
-                            Shipping Address
-                          </div>
-                          <div className="text-base-content/70">
-                            {order.firstName} {order.lastName}<br />
-                            {order.street}<br />
-                            {order.city}, {order.state} {order.zip}
-                          </div>
+                </div>
+                <div className="space-y-1 text-sm text-base-content/70 mb-3">
+                  <div className="flex items-center gap-2">
+                    <Calendar size={14} />
+                    {formatDate(order.createdAt)}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Package size={14} />
+                    {order.lineItems.length} items
+                  </div>
+                </div>
+                <button
+                  className="btn btn-primary btn-sm w-full"
+                  onClick={() => window[order.id].showModal()}
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Modal - Updated for better mobile view */}
+        {orders.map((order) => (
+          <dialog key={order.id} id={order.id} className="modal">
+            <div className="modal-box max-w-3xl p-4">
+              <div className="grid grid-cols-1 gap-6 mb-6">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-lg font-semibold">
+                    <Box size={20} />
+                    Order #{order.lookUpId}
+                  </div>
+                  <div className="flex flex-col gap-2 text-base-content/70">
+                    <div className="flex items-center gap-2">
+                      <Calendar size={16} />
+                      {formatDate(order.createdAt)}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Truck size={16} />
+                      Arriving in 2 days
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-2 bg-base-200 p-4 rounded-lg">
+                  <div className="flex items-center gap-2 font-semibold">
+                    <MapPin size={20} />
+                    Shipping Address
+                  </div>
+                  <div className="text-base-content/70">
+                    {order.firstName} {order.lastName}<br />
+                    {order.street}<br />
+                    {order.city}, {order.state} {order.zip}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold">Order Items</h3>
+                <div className="space-y-3">
+                  {order.lineItems.map((item) => (
+                    <div key={uuidv4()} className="flex gap-3 items-center p-3 bg-base-200 rounded-lg">
+                      <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden flex-shrink-0">
+                        <img
+                          src={item.product.imageURL}
+                          alt={item.product.name}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="flex-grow min-w-0">
+                        <h4 className="font-medium truncate">{item.product.name}</h4>
+                        <div className="text-sm text-base-content/70">
+                          Quantity: {item.quantity}
                         </div>
                       </div>
-
-                      <div className="space-y-4">
-                        <h3 className="text-lg font-semibold">Order Items</h3>
-                        {order.lineItems.map((item) => (
-                          <div key={uuidv4()} className="flex gap-4 items-center p-4 bg-base-200 rounded-lg">
-                            <div className="w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
-                              <img
-                                src={item.product.imageURL}
-                                alt={item.product.name}
-                                className="w-full h-full object-cover"
-                                loading="lazy"
-                              />
-                            </div>
-                            <div className="flex-grow">
-                              <h4 className="font-medium">{item.product.name}</h4>
-                              <div className="text-sm text-base-content/70">
-                                Quantity: {item.quantity}
-                              </div>
-                            </div>
-                            <div className="text-right font-medium">
-                              {formatPrice(item.product.price)}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="modal-action">
-                        <form method="dialog">
-                          <button className="btn">Close</button>
-                        </form>
+                      <div className="text-right font-medium whitespace-nowrap">
+                        {formatPrice(item.product.price)}
                       </div>
                     </div>
-                  </dialog>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  ))}
+                </div>
+              </div>
+
+              <div className="modal-action">
+                <form method="dialog">
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+        ))}
       </div>
     )
   }

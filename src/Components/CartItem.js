@@ -60,8 +60,8 @@ const CartItem = ({ product }) => {
     const itemSubtotal = itemPrice * quantity
 
     return (
-        <div className="card bg-base-200 shadow-xl hover:shadow-2xl transition-shadow duration-200 max-w-sm mx-auto">
-            <figure className="relative pt-[75%]">
+        <div className="card bg-base-200 shadow-xl h-full">
+            <figure className="relative pt-[100%]">
                 <img 
                     src={product.product.imageURL} 
                     alt={product.product.name}
@@ -69,48 +69,48 @@ const CartItem = ({ product }) => {
                     loading="lazy"
                 />
             </figure>
-            <div className="card-body p-3 sm:p-4">
-                <h2 className="card-title text-base sm:text-lg font-bold line-clamp-2 min-h-[2.5rem]">
+            <div className="card-body p-2 sm:p-4">
+                <h2 className="card-title text-sm sm:text-base font-bold line-clamp-2">
                     {product.product.name}
                 </h2>
-                <div className="text-lg sm:text-xl font-semibold text-primary">
+                <div className="text-base sm:text-lg font-semibold text-primary">
                     {formatPrice(itemPrice)}
                 </div>
                 
-                <div className="flex items-center justify-between mt-2 sm:mt-4">
-                    <div className="flex items-center gap-1 sm:gap-2">
+                <div className="flex items-center justify-between mt-auto pt-2">
+                    <div className="flex items-center gap-1">
                         <button 
-                            className="btn btn-circle btn-sm"
+                            className="btn btn-circle btn-xs"
                             onClick={() => handleQuantityChange(quantity - 1)}
                             disabled={quantity <= 1}
                         >
-                            <Minus size={14} />
+                            <Minus size={12} />
                         </button>
                         <input
                             type="number"
                             min="0"
                             value={quantity}
                             onChange={(e) => handleQuantityChange(e.target.value)}
-                            className="input input-bordered input-sm w-14 text-center px-1"
+                            className="input input-bordered input-xs w-12 text-center px-0"
                         />
                         <button 
-                            className="btn btn-circle btn-sm"
+                            className="btn btn-circle btn-xs"
                             onClick={() => handleQuantityChange(quantity + 1)}
                         >
-                            <Plus size={14} />
+                            <Plus size={12} />
                         </button>
                     </div>
                     
                     <button 
-                        className="btn btn-ghost btn-circle btn-sm"
+                        className="btn btn-ghost btn-circle btn-xs"
                         onClick={handleRemove}
                         aria-label="Remove item"
                     >
-                        <Trash2 size={18} />
+                        <Trash2 size={14} />
                     </button>
                 </div>
                 
-                <div className="text-xs sm:text-sm text-base-content/70 mt-2">
+                <div className="text-xs text-base-content/70 mt-2">
                     Subtotal: {formatPrice(itemSubtotal)}
                 </div>
             </div>
