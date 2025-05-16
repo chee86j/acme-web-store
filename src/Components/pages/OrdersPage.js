@@ -3,7 +3,7 @@ import axios from "axios"
 import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Link, useNavigate } from "react-router-dom"
-import { getAverageRating } from "../../util"
+import { getAverageRating, formatPrice } from "../../util"
 import { Package, Loader, Calendar, Box, MapPin, Truck } from 'react-feather'
 import Rating from "../ui/Rating"
 import Spinner from "../Spinner"
@@ -14,13 +14,6 @@ const formatDate = (dateString) => {
     month: 'long',
     day: 'numeric'
   })
-}
-
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(price)
 }
 
 const Orders = () => {

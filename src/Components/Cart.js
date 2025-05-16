@@ -1,18 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { fetchGuestCart, fetchUserCart, logout, removeFromCart } from "../store"
 import { Link, useNavigate } from "react-router-dom"
-import { cartQuantity, cartTotal } from "../util"
+import { cartQuantity, formatPrice } from "../util"
 import Spinner from "./Spinner"
 import { ShoppingBag } from 'react-feather'
 import CartItem from "./CartItem"
-
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(price || 0)
-}
+import { useCart } from "../hooks/useCart"
 
 const calculateCartTotal = (items) => {
   if (!items || !Array.isArray(items)) return 0
@@ -24,27 +16,22 @@ const calculateCartTotal = (items) => {
 }
 
 const Cart = () => {
-  const { cart, auth, product } = useSelector((state) => state)
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+  const { cart, loadCart } = useCart()
 
   useEffect(() => {
-    const loadCart = async () => {
+    const initCart = async () => {
       try {
-        if (auth.id) {
-          await dispatch(fetchUserCart())
-        } else {
-          await dispatch(fetchGuestCart())
-        }
+        await loadCart()
       } catch (err) {
         setError('Failed to load cart. Please try again.')
       } finally {
         setIsLoading(false)
       }
     }
-    loadCart()
+    initCart()
   }, [])
 
   const cartItems = cart && cart.cartItems ? [...cart.cartItems].sort((a, b) => {

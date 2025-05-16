@@ -1,16 +1,9 @@
 import React, { useEffect } from "react"
 import { Link } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { cartQuantity, cartTotal } from "../util"
-import { fetchGuestCart, fetchUserCart } from "../store"
+import { cartQuantity } from "../util"
+import { formatPrice } from "../util"
 import { ShoppingBag } from 'react-feather'
-
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(parseFloat(price) || 0)
-}
+import { useCart } from "../hooks/useCart"
 
 const calculateCartTotal = (items) => {
   if (!items || !Array.isArray(items)) return 0
@@ -22,15 +15,10 @@ const calculateCartTotal = (items) => {
 }
 
 const CartDropdown = () => {
-  const { cart, auth } = useSelector((state) => state)
-  const dispatch = useDispatch()
+  const { cart, loadCart } = useCart()
   
   useEffect(() => {
-    if (auth.id) {
-      dispatch(fetchUserCart())
-    } else {
-      dispatch(fetchGuestCart())
-    }
+    loadCart()
   }, [])
 
   const items = cart.cartItems || []

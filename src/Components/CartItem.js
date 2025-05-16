@@ -1,26 +1,13 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Plus, Minus, Trash2 } from 'react-feather'
-import {
-  removeFromCart,
-  updateCartQuantity,
-  updateGuestCartQuantity,
-  removeFromGuestCart,
-} from "../store"
-
-const formatPrice = (price) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(parseFloat(price) || 0)
-}
+import { formatPrice } from '../util'
+import { useCart } from '../hooks/useCart'
 
 const CartItem = ({ product }) => {
-    const {auth} = useSelector(state => state)
     const [quantity, setQuantity] = useState(parseInt(product.quantity) || 0)
     const [isUpdating, setIsUpdating] = useState(false)
     const [error, setError] = useState(null)
-    const dispatch = useDispatch()
+    const { updateQuantity, removeItem } = useCart()
     
     const handleQuantityChange = async (newQuantity) => {
         const validQuantity = parseInt(newQuantity) || 0
@@ -31,26 +18,7 @@ const CartItem = ({ product }) => {
         setError(null)
         
         try {
-            if (validQuantity === 0) {
-                if (auth.id) {
-                    await dispatch(removeFromCart({product: product}))
-                } else {
-                    await dispatch(removeFromGuestCart({product: {product}}))
-                }
-                return
-            }
-
-            if (auth.id) {
-                await dispatch(updateCartQuantity({
-                    product,
-                    quantity: validQuantity
-                }))
-            } else {
-                await dispatch(updateGuestCartQuantity({
-                    productId: product.product.id,
-                    quantity: validQuantity
-                }))
-            }
+            await updateQuantity(product, validQuantity)
         } catch (err) {
             setError('Failed to update quantity')
             setQuantity(parseInt(product.quantity) || 0)
@@ -64,11 +32,7 @@ const CartItem = ({ product }) => {
         setError(null)
         
         try {
-            if (auth.id) {
-                await dispatch(removeFromCart({product: product}))
-            } else {
-                await dispatch(removeFromGuestCart({product: {product}}))
-            }
+            await removeItem(product)
         } catch (err) {
             setError('Failed to remove item')
             setIsUpdating(false)

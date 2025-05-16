@@ -4,158 +4,171 @@ import axios from "axios"
 
 const initialState = {
   cartItems: [],
+  loading: false,
+  error: null
 }
 
-export const fetchUserCart = createAsyncThunk("fetchUserCart", async () => {
-  try {
-    const token = window.localStorage.getItem("token")
-    const response = await axios.get("/api/cart", {
-      headers: {
-        authorization: token,
-      },
-    })
-    console.log(response.data)
-    return response.data
-  } catch (err) {
-    console.log(err)
+// Helper functions to reduce duplication
+const getToken = () => window.localStorage.getItem("token")
+
+const getGuestCartFromStorage = () => {
+  let cart = window.localStorage.getItem("cart");
+  if (!cart) {
+    const newCart = { id: uuidv4(), userId: null, cartItems: [] };
+    window.localStorage.setItem("cart", JSON.stringify(newCart));
+    cart = JSON.stringify(newCart);
   }
-})
+  return JSON.parse(cart);
+}
+
+const saveGuestCartToStorage = (cart) => {
+  window.localStorage.setItem("cart", JSON.stringify(cart));
+  return cart;
+}
+
+export const fetchUserCart = createAsyncThunk("fetchUserCart", async (_, { rejectWithValue }) => {
+  try {
+    const token = getToken();
+    const response = await axios.get("/api/cart", {
+      headers: { authorization: token }
+    });
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response?.data || 'Failed to fetch user cart');
+  }
+});
 
 export const fetchGuestCart = createAsyncThunk("fetchGuestCart", async () => {
-  let cart = window.localStorage.getItem("cart");
-  if(!cart){
-    let json = JSON.stringify({ "id": uuidv4(), "userId": null, "cartItems": [] });
-    window.localStorage.setItem("cart", json)
-    cart = window.localStorage.getItem("cart");
-  }
-  return JSON.parse(cart)
-}) 
+  return getGuestCartFromStorage();
+});
 
 export const deleteGuestCart = createAsyncThunk("deleteGuestCart", async () => {
-  let json = JSON.stringify({ "id": uuidv4(), "userId": null, "cartItems": [] });
-  window.localStorage.setItem("cart", json)
-  let cart = window.localStorage.getItem("cart");
-  return JSON.parse(cart)
-})
+  const newCart = { id: uuidv4(), userId: null, cartItems: [] };
+  return saveGuestCartToStorage(newCart);
+});
 
-export const addToCart = createAsyncThunk("addToCart", async (payload) => {
+export const addToCart = createAsyncThunk("addToCart", async (payload, { rejectWithValue }) => {
   try {
-    const token = window.localStorage.getItem("token")
+    const token = getToken();
     const response = await axios.post("/api/cart", payload, {
-      headers: {
-        authorization: token
-      }
-    })
-    return response.data
+      headers: { authorization: token }
+    });
+    return response.data;
   } catch (error) {
-    console.log(error)
+    return rejectWithValue(error.response?.data || 'Failed to add item to cart');
   }
-})
+});
 
-export const updateCartQuantity = createAsyncThunk("updateCartQuantity", async (payload) => {
+export const updateCartQuantity = createAsyncThunk("updateCartQuantity", async (payload, { rejectWithValue }) => {
   try {
-    const token = window.localStorage.getItem("token")
+    const token = getToken();
     const response = await axios.put("/api/cart/update", payload, {
-      headers: {
-        authorization: token
-      }
-    })
-    return response.data 
+      headers: { authorization: token }
+    });
+    return response.data;
   } catch (error) {
-    console.log(error)
+    return rejectWithValue(error.response?.data || 'Failed to update cart quantity');
   }
-})
+});
 
 export const addToGuestCart = createAsyncThunk("addToGuestCart", async (payload) => {
-  let cart = window.localStorage.getItem("cart");
-  cart = JSON.parse(cart);
-  const index = cart.cartItems.findIndex(item => item.product.id === payload.product.id)
-  if (index >= 0){
-    cart.cartItems[index].quantity += payload.quantity
-  }else{
+  const cart = getGuestCartFromStorage();
+  const index = cart.cartItems.findIndex(item => item.product.id === payload.product.id);
+  
+  if (index >= 0) {
+    cart.cartItems[index].quantity += payload.quantity;
+  } else {
     cart.cartItems.push({
       product: payload.product,
-      quantity: payload.quantity,
-    })
+      quantity: payload.quantity
+    });
   }
-  window.localStorage.setItem("cart", JSON.stringify(cart))
-  return cart;
-})
+  
+  return saveGuestCartToStorage(cart);
+});
 
-export const updateGuestCartQuantity = createAsyncThunk("updateGuestCartQuantity", async (payload) => {
+export const updateGuestCartQuantity = createAsyncThunk("updateGuestCartQuantity", async (payload, { rejectWithValue }) => {
   try {
-    let cart = window.localStorage.getItem("cart")
-    cart = JSON.parse(cart)
-    const index = cart.cartItems.findIndex(item => item.product.id === payload.productId)
-    cart.cartItems[index].quantity = payload.quantity
-    window.localStorage.setItem("cart", JSON.stringify(cart));
-    return cart;
+    const cart = getGuestCartFromStorage();
+    const index = cart.cartItems.findIndex(item => item.product.id === payload.productId);
+    
+    if (index === -1) {
+      return rejectWithValue('Item not found in cart');
+    }
+    
+    cart.cartItems[index].quantity = payload.quantity;
+    return saveGuestCartToStorage(cart);
   } catch (error) {
-    console.log(error)
+    return rejectWithValue('Failed to update cart quantity');
   }
-})
+});
 
-export const removeFromCart = createAsyncThunk("removeFromCart", async (payload) => {
+export const removeFromCart = createAsyncThunk("removeFromCart", async (payload, { rejectWithValue }) => {
   try {
-    const token = window.localStorage.getItem("token")
+    const token = getToken();
     const response = await axios.put("/api/cart", payload, {
-      headers: {
-        authorization: token
-      }
-    })
-    return response.data
+      headers: { authorization: token }
+    });
+    return response.data;
   } catch (error) {
-    console.log(error)
+    return rejectWithValue(error.response?.data || 'Failed to remove item from cart');
   }
-})
+});
 
-export const removeFromGuestCart = createAsyncThunk("removeFromGuestCart", async (payload) => {
+export const removeFromGuestCart = createAsyncThunk("removeFromGuestCart", async (payload, { rejectWithValue }) => {
   try {
-    let cart = window.localStorage.getItem("cart");
-    cart = JSON.parse(cart);
-    const index = cart.cartItems.findIndex(item => item.product.id === payload.product.product.id)
-    console.log(index);
-    cart.cartItems.splice(index,1);
-    window.localStorage.setItem("cart", JSON.stringify(cart));
-    return cart
-  }catch (error){
-    console.log(error)
+    const cart = getGuestCartFromStorage();
+    const index = cart.cartItems.findIndex(item => item.product.id === payload.product.product.id);
+    
+    if (index === -1) {
+      return rejectWithValue('Item not found in cart');
+    }
+    
+    cart.cartItems.splice(index, 1);
+    return saveGuestCartToStorage(cart);
+  } catch (error) {
+    return rejectWithValue('Failed to remove item from cart');
   }
-})
+});
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(fetchGuestCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(fetchUserCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(addToCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(removeFromCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(addToGuestCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(deleteGuestCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(removeFromGuestCart.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(updateCartQuantity.fulfilled, (state, action) => {
-      return action.payload
-    })
-    builder.addCase(updateGuestCartQuantity.fulfilled, (state, action) => {
-       return action.payload
-    })
+  reducers: {
+    clearCartError: (state) => {
+      state.error = null;
+    }
   },
-})
+  extraReducers: (builder) => {
+    // Handle pending states
+    [fetchUserCart, addToCart, updateCartQuantity, removeFromCart].forEach(thunk => {
+      builder.addCase(thunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      });
+    });
+    
+    // Handle rejected states
+    [fetchUserCart, addToCart, updateCartQuantity, removeFromCart, 
+     updateGuestCartQuantity, removeFromGuestCart].forEach(thunk => {
+      builder.addCase(thunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'An error occurred';
+      });
+    });
+    
+    // Handle fulfilled states - all have the same behavior
+    [fetchGuestCart, fetchUserCart, addToCart, removeFromCart, addToGuestCart, 
+     deleteGuestCart, removeFromGuestCart, updateCartQuantity, updateGuestCartQuantity].forEach(thunk => {
+      builder.addCase(thunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        // Use the spread operator to ensure we preserve state properties not included in the payload
+        return { ...action.payload, loading: false, error: null };
+      });
+    });
+  },
+});
 
-export default cartSlice.reducer
+export const { clearCartError } = cartSlice.actions;
+export default cartSlice.reducer;

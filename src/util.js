@@ -29,6 +29,13 @@ export const getAverageRating = (reviews) => {
   return Math.floor(sum / reviews.length)
 }
 
+export const formatPrice = (price) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(Number(price) || 0)
+}
+
 export const emailValidator = (email) => {
   if (!email || typeof email !== 'string') return false
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
