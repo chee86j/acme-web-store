@@ -36,7 +36,7 @@ const PaginatedProducts = () => {
   }, [])
 
   if (!products) {
-    return <>Loading...</>
+    return <div aria-live="polite" aria-busy="true" className="loading-container">Loading products...</div>
   }
 
   // Hook to listen for changes in the url to determine if we are on the products page
@@ -71,58 +71,75 @@ const PaginatedProducts = () => {
     window.scrollTo(0, 0);
   };
 
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div ref={ref}>
-      <div className="flex flex-wrap justify-center gap-10">
+      <div className="flex flex-wrap justify-center gap-10" role="search" aria-label="Product filters">
         {/* Filter by category */}
-        <select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          className="w-80 xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
-        >
-          <option value="">All Categories</option>
-          <option value="Category1">Category 1</option>
-          <option value="Category2">Category 2</option>
-          {/* Add more options for your categories */}
-        </select>
-
-        {/* Search input */}
-        <div className="join">
-          <div className="btn btn-square join-item" disabled>
-            <SearchIcon size={24} className="text-black" />
-          </div>
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search"
-            className="xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
-          /
+        <div className="form-control">
+          <label htmlFor="category-select" className="sr-only">Filter by category</label>
+          <select
+            id="category-select"
+            value={selectedCategory}
+            onChange={handleCategoryChange}
+            className="w-80 xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
+            aria-label="Category filter"
           >
-
+            <option value="">All Categories</option>
+            <option value="Category1">Category 1</option>
+            <option value="Category2">Category 2</option>
+            {/* Add more options for your categories */}
+          </select>
         </div>
 
-
+        {/* Search input */}
+        <div className="join" role="search">
+          <div className="btn btn-square join-item" aria-hidden="true">
+            <SearchIcon size={24} className="text-black" />
+          </div>
+          <label htmlFor="product-search" className="sr-only">Search products</label>
+          <input
+            id="product-search"
+            type="search"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            placeholder="Search products"
+            aria-label="Search products"
+            className="xl:btn-xl btn-ghost join-item btn flex items-center border-2 border-secondary bg-base-300 text-2xl font-bold normal-case hover:bg-base-200"
+          />
+        </div>
       </div>
 
       {/* Display filtered products */}
-      <Products currentProducts={currentProducts} wishlist={wishlist} />
+      <section aria-label="Product listing">
+        <Products currentProducts={currentProducts} wishlist={wishlist} />
+      </section>
 
       {/* Pagination */}
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-        className="join flex justify-center"
-        activeClassName="join-item bg-base-200"
-        pageClassName="btn-sm join-item text-lg"
-        previousClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
-        nextClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
-      />
+      <nav aria-label="Pagination" className="pagination-container">
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          className="join flex justify-center"
+          activeClassName="join-item bg-base-200"
+          pageClassName="btn-sm join-item text-lg"
+          previousClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
+          nextClassName="btn-sm join-item bg-base-300 hover:bg-base-200 flex items-center"
+          aria-label="Product pagination"
+        />
+      </nav>
     </div>
   )
 }
@@ -132,19 +149,23 @@ export const Products = ({ currentProducts, wishlist }) => {
     <div className="m-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center">
       {currentProducts.map((product) => {
         return (
-          <div
+          <article
             className="card glass card-compact w-full max-w-[16rem] sm:card-normal"
             key={uuidv4()}
           >
             <figure className="min-h-12">
               <img
                 src={product.imageURL}
-                alt={product.name}
+                alt={`Product image: ${product.name}`}
                 className="mask-square aspect-square h-full w-full"
+                loading="lazy"
               />
             </figure>
             <div className="card-body p-2">
-              <Link to={`/products/${product.id}`}>
+              <Link 
+                to={`/products/${product.id}`}
+                aria-label={`View details for ${product.name}`}
+              >
                 <h2 className="text-lg font-bold min-h-full overflow-hidden hover:text-base-200">
                   {product.name}
                 </h2>
@@ -157,7 +178,7 @@ export const Products = ({ currentProducts, wishlist }) => {
                 </div>
                 <div className="grow"></div>
                 <div className="flex-none px-2">
-                  <span className="badge badge-ghost">
+                  <span className="badge badge-ghost" aria-label={`Price: ${product.price} dollars`}>
                     <span className="text-lg font-bold">$</span>
                     <span className="font-bold">{product.price}</span>
                   </span>
@@ -168,7 +189,7 @@ export const Products = ({ currentProducts, wishlist }) => {
                 <AddToCartButton product={product} quantity={1} />
               </div>
             </div>
-          </div>
+          </article>
         );
       })}
     </div>
