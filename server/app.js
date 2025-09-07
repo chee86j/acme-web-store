@@ -24,6 +24,7 @@ app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "../static/index.html"))
 )
 
+
 app.use("/api/auth", require("./api/auth"))
 app.use("/api/orders", require("./api/orders"))
 app.use('/api/products', require('./api/products'))

@@ -73,7 +73,7 @@ Create a `.env` file in the root directory with the following variables:
 ```
   [DATABASE_URL] = your_postgresql_connection_string
   [JWT_SECRET] = your_jwt_secret
-  [STRIPE_SECRET_KEY] = your_stripe_secret_key
+  [STRIPE_KEY] = your_stripe_secret_key
   [EMAIL_HOST] = your_email_host
   [EMAIL_PORT] = your_email_port
   [EMAIL_USERNAME] = your_email_username

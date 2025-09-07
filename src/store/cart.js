@@ -161,10 +161,10 @@ const cartSlice = createSlice({
     [fetchGuestCart, fetchUserCart, addToCart, removeFromCart, addToGuestCart, 
      deleteGuestCart, removeFromGuestCart, updateCartQuantity, updateGuestCartQuantity].forEach(thunk => {
       builder.addCase(thunk.fulfilled, (state, action) => {
+        // Mutate the draft state directly instead of returning a new object
+        Object.assign(state, action.payload);
         state.loading = false;
         state.error = null;
-        // Use the spread operator to ensure we preserve state properties not included in the payload
-        return { ...action.payload, loading: false, error: null };
       });
     });
   },

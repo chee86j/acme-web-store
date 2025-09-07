@@ -136,59 +136,38 @@ const productsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getWishlist.fulfilled, (state, action) => {
-      return { ...state, wishlist: action.payload };
+      state.wishlist = action.payload;
     }),
       builder.addCase(addWishlist.fulfilled, (state, action) => {
-        return { ...state, wishlist: [...state.wishlist, action.payload] };
+        state.wishlist.push(action.payload);
       }),
       builder.addCase(removeWishlist.fulfilled, (state, action) => {
         console.log(action.payload)
-        return {
-          ...state,
-          wishlist: state.wishlist.filter(
-            (item) => item.productId !== action.payload.productId
-          ),
-        };
+        state.wishlist = state.wishlist.filter(
+          (item) => item.productId !== action.payload.productId
+        );
       }),
       builder.addCase(createProduct.fulfilled, (state, action) => {
-        return {
-          ...state,
-          products: [action.payload, ...state.products],
-        };
+        state.products.unshift(action.payload);
       }),
       builder.addCase(fetchProducts.fulfilled, (state, action) => {
-        return {
-          ...state,
-          products: action.payload,
-        };
+        state.products = action.payload;
       }),
       builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
-        return {
-          ...state,
-          products: action.payload,
-        };
+        state.products = action.payload;
       }),
       builder.addCase(updateProduct.fulfilled, (state, action) => {
-        return {
-          ...state,
-          selectedProduct: action.payload,
-          products: state.products.map((product) => {
-            if (product.id === action.payload.id) {
-              return action.payload;
-            } else {
-              return product;
-            }
-          }),
-        };
+        state.selectedProduct = action.payload;
+        const index = state.products.findIndex(product => product.id === action.payload.id);
+        if (index !== -1) {
+          state.products[index] = action.payload;
+        }
       }),
       builder.addCase(deleteProduct.fulfilled, (state, action) => {
-        return {
-          ...state,
-          selectedProduct: {},
-          products: state.products.filter(
-            (product) => product.id !== action.payload.id
-          ),
-        };
+        state.selectedProduct = {};
+        state.products = state.products.filter(
+          (product) => product.id !== action.payload.id
+        );
       });
   },
 });

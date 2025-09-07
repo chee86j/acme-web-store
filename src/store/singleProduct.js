@@ -24,11 +24,11 @@ const singleProductSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSingleProduct.fulfilled, (state, action) => {
-      return action.payload
+      Object.assign(state, action.payload);
     })
     builder.addCase(fetchSingleProduct.rejected, (state, action) => {
       // handle the rejected case and set the state
-      return "Error occured while fetching the product"
+      state.error = "Error occured while fetching the product";
     })
   },
 })

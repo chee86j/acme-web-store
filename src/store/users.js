@@ -59,13 +59,13 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
-      return { ...state, users: action.payload }
+      state.users = action.payload;
     })
     builder.addCase(fetchUser.fulfilled, (state, action) => {
-      return { ...state, user: action.payload }
+      state.user = action.payload;
     })
     builder.addCase(updateUser.fulfilled, (state,action) =>{
-      return { ...state, user: action.payload }
+      state.user = action.payload;
     })
   },
 })

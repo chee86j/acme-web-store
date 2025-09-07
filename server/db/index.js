@@ -43,10 +43,7 @@ getRandomCategory = () => {
 const createFakeProduct = () => {
   return {
     name: faker.commerce.productName(),
-    imageURL: faker.image.url({
-      height: 400,
-      width: 400,
-    }),
+    imageURL: `https://picsum.photos/400/400?random=${faker.number.int({ max: 1000 })}`,
     price: faker.commerce.price(),
     description: faker.commerce.productDescription(),
     material: faker.commerce.productMaterial(),

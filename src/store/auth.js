@@ -46,15 +46,15 @@ const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       window.localStorage.removeItem("token")
-      return {}
+      Object.keys(state).forEach(key => delete state[key]);
     },
   },
   extraReducers: (builder) => {
     builder.addCase(loginWithToken.fulfilled, (state, action) => {
-      return action.payload
+      Object.assign(state, action.payload);
     })
     builder.addCase(attemptLogin.fulfilled, (state, action) => {
-      return action.payload
+      Object.assign(state, action.payload);
     })
   },
 })

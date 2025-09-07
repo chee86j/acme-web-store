@@ -44,10 +44,10 @@ const ordersSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchOrders.fulfilled, (state, action) => {
-            return { ...state, orders: action.payload }
+            state.orders = action.payload;
         })
         builder.addCase(fetchOrder.fulfilled, (state, action) => {
-            return { ...state, order: action.payload }
+            state.order = action.payload;
         })
     }
 })

@@ -73,34 +73,26 @@ const reviewsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchReviews.fulfilled, (state, action) => {
-      return { ...state, reviews: action.payload }
+      state.reviews = action.payload;
     })
     builder.addCase(fetchReview.fulfilled, (state, action) => {
-      return { ...state, review: action.payload }
+      state.review = action.payload;
     })
     builder.addCase(createReview.fulfilled, (state, action) => {
-      return {
-        ...state,
-        review: action.payload,
-        reviews: [...state.reviews, action.payload],
-      }
+      state.review = action.payload;
+      state.reviews.push(action.payload);
     })
     builder.addCase(deleteReview.fulfilled, (state, action) => {
-      return {
-        ...state,
-        review: action.payload,
-        reviews: state.reviews.filter(
-          (review) => review.id !== action.payload.id
-        ),
-      }
+      state.review = action.payload;
+      state.reviews = state.reviews.filter(
+        (review) => review.id !== action.payload.id
+      );
     })
     builder.addCase(updateReview.fulfilled, (state, action) => {
-      return {
-        ...state,
-        review: action.payload,
-        reviews: state.reviews.map((review) =>
-          review.id === action.payload.id ? action.payload : review
-        ),
+      state.review = action.payload;
+      const index = state.reviews.findIndex(review => review.id === action.payload.id);
+      if (index !== -1) {
+        state.reviews[index] = action.payload;
       }
     })
   },
