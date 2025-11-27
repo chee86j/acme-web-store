@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import { fetchSingleProduct as fetchSingleProductRequest } from "../services/productsService"
 
 const initialState = {}
 
@@ -9,8 +9,7 @@ export const fetchSingleProduct = createAsyncThunk(
     // rejectWithValue added to handle rejected case and return err val
     try {
       // this way the fetchSingleProduct.fulfilled case can handle both successful & rejected responses
-      const response = await axios.get(`/api/products/${id}`)
-      return response.data
+      return await fetchSingleProductRequest(id)
     } catch (error) {
       // Return the error using rejectWithValue
       return rejectWithValue(error)

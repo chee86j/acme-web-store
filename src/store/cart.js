@@ -1,15 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import { v4 as uuidv4 } from "uuid"
-import axios from "axios"
+import {
+  addToCart as addToCartRequest,
+  fetchUserCart as fetchUserCartRequest,
+  removeFromCart as removeFromCartRequest,
+  updateCartQuantity as updateCartQuantityRequest,
+} from "../services/cartService"
 
 const initialState = {
   cartItems: [],
   loading: false,
   error: null
 }
-
-// Helper functions to reduce duplication
-const getToken = () => window.localStorage.getItem("token")
 
 const getGuestCartFromStorage = () => {
   let cart = window.localStorage.getItem("cart");
@@ -28,11 +30,8 @@ const saveGuestCartToStorage = (cart) => {
 
 export const fetchUserCart = createAsyncThunk("fetchUserCart", async (_, { rejectWithValue }) => {
   try {
-    const token = getToken();
-    const response = await axios.get("/api/cart", {
-      headers: { authorization: token }
-    });
-    return response.data;
+    const response = await fetchUserCartRequest();
+    return response;
   } catch (err) {
     return rejectWithValue(err.response?.data || 'Failed to fetch user cart');
   }
@@ -49,11 +48,8 @@ export const deleteGuestCart = createAsyncThunk("deleteGuestCart", async () => {
 
 export const addToCart = createAsyncThunk("addToCart", async (payload, { rejectWithValue }) => {
   try {
-    const token = getToken();
-    const response = await axios.post("/api/cart", payload, {
-      headers: { authorization: token }
-    });
-    return response.data;
+    const response = await addToCartRequest(payload);
+    return response;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to add item to cart');
   }
@@ -61,11 +57,8 @@ export const addToCart = createAsyncThunk("addToCart", async (payload, { rejectW
 
 export const updateCartQuantity = createAsyncThunk("updateCartQuantity", async (payload, { rejectWithValue }) => {
   try {
-    const token = getToken();
-    const response = await axios.put("/api/cart/update", payload, {
-      headers: { authorization: token }
-    });
-    return response.data;
+    const response = await updateCartQuantityRequest(payload);
+    return response;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to update cart quantity');
   }
@@ -105,11 +98,8 @@ export const updateGuestCartQuantity = createAsyncThunk("updateGuestCartQuantity
 
 export const removeFromCart = createAsyncThunk("removeFromCart", async (payload, { rejectWithValue }) => {
   try {
-    const token = getToken();
-    const response = await axios.put("/api/cart", payload, {
-      headers: { authorization: token }
-    });
-    return response.data;
+    const response = await removeFromCartRequest(payload);
+    return response;
   } catch (error) {
     return rejectWithValue(error.response?.data || 'Failed to remove item from cart');
   }
