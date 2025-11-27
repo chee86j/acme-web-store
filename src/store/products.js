@@ -1,5 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import {
+  addWishlistItem,
+  createProduct as createProductRequest,
+  deleteProduct as deleteProductRequest,
+  fetchProducts as fetchProductsRequest,
+  fetchProductsByCategory as fetchProductsByCategoryRequest,
+  fetchWishlist as fetchWishlistRequest,
+  removeWishlistItem,
+  updateProduct as updateProductRequest,
+} from "../services/productsService"
 
 const initialState = {
   products: Array(0),
@@ -10,8 +19,7 @@ const initialState = {
 
 export const fetchProducts = createAsyncThunk("fetchProducts", async () => {
   try {
-    const response = await axios.get(`/api/products`);
-    return response.data;
+    return await fetchProductsRequest();
   } catch (err) {
     console.log(err);
   }
@@ -21,8 +29,7 @@ export const fetchProductsByCategory = createAsyncThunk(
   "fetchProductsByCategory",
   async (category) => {
     try {
-      const response = await axios.get(`/api/products?category=${category}`);
-      return response.data;
+      return await fetchProductsByCategoryRequest(category);
     } catch (err) {
       console.log(err);
     }
@@ -33,13 +40,7 @@ export const updateProduct = createAsyncThunk(
   "updateProduct",
   async (product) => {
     try {
-      const token = window.localStorage.getItem("token");
-      const response = await axios.put(`/api/products/${product.id}`, product, {
-        headers: {
-          authorization: token,
-        },
-      });
-      return response.data;
+      return await updateProductRequest(product);
     } catch (err) {
       console.log(err);
     }
@@ -50,13 +51,7 @@ export const deleteProduct = createAsyncThunk(
   "deleteProduct",
   async (productId) => {
     try {
-      const token = window.localStorage.getItem("token");
-      const response = await axios.delete(`/api/products/${productId}`, {
-        headers: {
-          authorization: token,
-        },
-      });
-      return response.data;
+      return await deleteProductRequest(productId);
     } catch (err) {
       console.log(err);
     }
@@ -67,13 +62,7 @@ export const createProduct = createAsyncThunk(
   "createProduct",
   async (product) => {
     try {
-      const token = window.localStorage.getItem("token");
-      const response = await axios.post(`/api/products`, product, {
-        headers: {
-          authorization: token,
-        },
-      });
-      return response.data;
+      return await createProductRequest(product);
     } catch (err) {
       console.log(err);
     }
@@ -82,13 +71,7 @@ export const createProduct = createAsyncThunk(
 
 export const getWishlist = createAsyncThunk("getWishlist", async (id) => {
   try {
-    const token = window.localStorage.getItem("token");
-    const response = await axios.get(`/api/wishlist/${id}`, {
-      headers: {
-        authorization: token,
-      },
-    });
-    return response.data;
+    return await fetchWishlistRequest(id);
   } catch (err) {
     console.log(err);
   }
@@ -96,13 +79,7 @@ export const getWishlist = createAsyncThunk("getWishlist", async (id) => {
 
 export const addWishlist = createAsyncThunk("addWishlist", async (data) => {
   try {
-    const token = window.localStorage.getItem("token");
-    const response = await axios.post(`/api/wishlist`, data, {
-      headers: {
-        authorization: token,
-      },
-    });
-    return response.data;
+    return await addWishlistItem(data);
   } catch (err) {
     console.log(err);
   }
@@ -110,13 +87,7 @@ export const addWishlist = createAsyncThunk("addWishlist", async (data) => {
 
 export const removeWishlist = createAsyncThunk("removeWishlist", async (id) => {
   try {
-    const token = window.localStorage.getItem("token");
-    const response = await axios.delete(`/api/wishlist/${id}`, {
-      headers: {
-        authorization: token,
-      },
-    });
-    return response.data;
+    return await removeWishlistItem(id);
   } catch (err) {
     console.log(err);
   }

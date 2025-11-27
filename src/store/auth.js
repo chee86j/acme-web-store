@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import { authenticate, fetchSession } from "../services/authService"
 
 const initialState = {
   cartId: null,
@@ -10,12 +10,8 @@ export const loginWithToken = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     const token = window.localStorage.getItem("token")
     if (token) {
-      const response = await axios.get("/api/auth/me", {
-        headers: {
-          authorization: token,
-        },
-      })
-      return response.data
+      const response = await fetchSession()
+      return response
     } else {
       return rejectWithValue()
     }
@@ -26,14 +22,7 @@ export const attemptLogin = createAsyncThunk(
   "attemptLogin",
   async (cred, { rejectWithValue }) => {
     try {
-      let response = await axios.post("/api/auth", cred)
-      window.localStorage.setItem("token", response.data.token)
-      response = await axios.get("/api/auth/me", {
-        headers: {
-          authorization: response.data.token,
-        },
-      })
-      return response.data
+      return await authenticate(cred)
     } catch (ex) {
       return rejectWithValue(ex.response.data)
     }

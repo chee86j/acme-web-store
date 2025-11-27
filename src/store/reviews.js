@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import axios from "axios"
+import {
+  createReview as createReviewRequest,
+  deleteReview as deleteReviewRequest,
+  fetchReviews as fetchReviewsRequest,
+  fetchReviewsByProduct as fetchReviewsByProductRequest,
+  updateReview as updateReviewRequest,
+} from "../services/reviewsService"
 
 const initialState = {
   reviews: Array(0),
@@ -8,8 +14,7 @@ const initialState = {
 
 export const fetchReviews = createAsyncThunk("fetchReviews", async () => {
   try {
-    const response = await axios.get("/api/reviews")
-    return response.data
+    return await fetchReviewsRequest()
   } catch (err) {
     console.log(err)
   }
@@ -17,8 +22,7 @@ export const fetchReviews = createAsyncThunk("fetchReviews", async () => {
 
 export const fetchReview = createAsyncThunk("fetchReview", async (id) => {
   try {
-    const response = await axios.get(`/api/reviews/${id}`)
-    return response.data
+    return await fetchReviewsByProductRequest(id)
   } catch (err) {
     console.log(err)
   }
@@ -27,13 +31,7 @@ export const fetchReview = createAsyncThunk("fetchReview", async (id) => {
 export const createReview = createAsyncThunk("createReview", async (review) => {
   try {
     console.log("REVIEW", review)
-    const token = window.localStorage.getItem("token")
-    const response = await axios.post("/api/reviews", review, {
-      headers: {
-        authorization: token,
-      },
-    })
-    return response.data
+    return await createReviewRequest(review)
   } catch (err) {
     console.log(err)
   }
@@ -41,13 +39,7 @@ export const createReview = createAsyncThunk("createReview", async (review) => {
 
 export const deleteReview = createAsyncThunk("deleteReview", async (id) => {
   try {
-    const token = window.localStorage.getItem("token")
-    const response = await axios.delete(`/api/reviews/${id}`, {
-      headers: {
-        authorization: token,
-      },
-    })
-    return response.data
+    return await deleteReviewRequest(id)
   } catch (err) {
     console.log(err)
   }
@@ -55,13 +47,7 @@ export const deleteReview = createAsyncThunk("deleteReview", async (id) => {
 
 export const updateReview = createAsyncThunk("updateReview", async (review) => {
   try {
-    const token = window.localStorage.getItem("token")
-    const response = await axios.put(`/api/reviews/${review.id}`, review, {
-      headers: {
-        authorization: token,
-      },
-    })
-    return response.data
+    return await updateReviewRequest(review)
   } catch (err) {
     console.log(err)
   }

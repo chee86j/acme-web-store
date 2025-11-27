@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { v4 as uuidv4 } from "uuid"
 import { Link, useLocation } from "react-router-dom"
 import ReactPaginate from "react-paginate"
@@ -9,13 +9,15 @@ import { getAverageRating } from "../util"
 import AddToCartButton from "./AddToCartButton"
 import WishListButton from "./ui/WishListButton"
 import { useParallax } from "react-scroll-parallax"
-import { fetchProducts, getWishlist } from "../store"
 import { SearchIcon } from "lucide-react"
+import { useWishlist } from "../hooks/useWishlist"
+import { useProducts } from "../hooks/useProducts"
 
 const PaginatedProducts = () => {
-  const { products, wishlist } = useSelector((state) => state.products);
+  const { products } = useSelector((state) => state.products);
   const { id } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { loadWishlist } = useWishlist();
+  const { loadProducts } = useProducts();
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,8 +34,12 @@ const PaginatedProducts = () => {
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(getWishlist(id))
-  }, [])
+    loadProducts();
+  }, [loadProducts]);
+
+  useEffect(() => {
+    loadWishlist(id);
+  }, [id, loadWishlist]);
 
   if (!products) {
     return <div aria-live="polite" aria-busy="true" className="loading-container">Loading products...</div>
@@ -119,7 +125,7 @@ const PaginatedProducts = () => {
 
       {/* Display filtered products */}
       <section aria-label="Product listing">
-        <Products currentProducts={currentProducts} wishlist={wishlist} />
+        <Products currentProducts={currentProducts} />
       </section>
 
       {/* Pagination */}
@@ -144,7 +150,7 @@ const PaginatedProducts = () => {
   )
 }
 
-export const Products = ({ currentProducts, wishlist }) => {
+export const Products = ({ currentProducts }) => {
   return (
     <div className="m-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 justify-items-center">
       {currentProducts.map((product) => {
@@ -185,7 +191,7 @@ export const Products = ({ currentProducts, wishlist }) => {
                 </div>
               </div>
               <div className="flex w-full flex-row items-center justify-center p-3">
-                <WishListButton product={product} wishlist={wishlist} />
+                <WishListButton product={product} />
                 <AddToCartButton product={product} quantity={1} />
               </div>
             </div>
