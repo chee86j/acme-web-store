@@ -1,0 +1,347 @@
+/* THEME VARIABLES - Classic and Modern E-Commerce Themes */
+
+/* ============================================================
+   CLASSIC THEME (Default)
+   Vibrant, energetic, playful
+============================================================ */
+
+:root,
+[data-theme="classic"] {
+  /* Primary Colors */
+  --color-primary: #22d3ee;
+  --color-primary-light: #06b6d4;
+  --color-primary-dark: #0891b2;
+  
+  /* Secondary Colors */
+  --color-secondary: #84cc16;
+  --color-secondary-light: #bfef45;
+  --color-secondary-dark: #65a30d;
+  
+  /* Accent Colors */
+  --color-accent: #ff7000;
+  --color-accent-light: #ffa500;
+  --color-accent-dark: #dd5000;
+  
+  /* Neutral Colors */
+  --color-neutral: #d6d6d6;
+  --color-neutral-light: #f3f4f6;
+  --color-neutral-dark: #111827;
+  
+  /* Semantic Colors */
+  --color-success: #62dfc8;
+  --color-warning: #c09f0c;
+  --color-error: #e6381a;
+  --color-info: #85d5e5;
+  
+  /* Text Colors */
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-text-light: #f9fafb;
+  
+  /* Background */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f9fafb;
+  --color-bg-tertiary: #f3f4f6;
+  
+  /* Border */
+  --color-border: #e5e7eb;
+  --color-border-light: #f3f4f6;
+  
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 999px;
+  
+  /* Transitions */
+  --duration-fast: 75ms;
+  --duration-base: 150ms;
+  --duration-slow: 300ms;
+  --easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   MODERN THEME
+   Clean, minimal, premium, professional
+============================================================ */
+
+[data-theme="modern"] {
+  /* Primary Colors - Slate (Professional, neutral) */
+  --color-primary: #1e293b;
+  --color-primary-light: #334155;
+  --color-primary-dark: #0f172a;
+  
+  /* Secondary Colors - Indigo (Trust, elegance) */
+  --color-secondary: #6366f1;
+  --color-secondary-light: #818cf8;
+  --color-secondary-dark: #4f46e5;
+  
+  /* Accent Colors - Emerald (Success, growth) */
+  --color-accent: #10b981;
+  --color-accent-light: #34d399;
+  --color-accent-dark: #059669;
+  
+  /* Neutral Colors */
+  --color-neutral: #e2e8f0;
+  --color-neutral-light: #f8fafc;
+  --color-neutral-dark: #0f172a;
+  
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+  
+  /* Text Colors */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-light: #f8fafc;
+  
+  /* Background */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-tertiary: #f1f5f9;
+  
+  /* Border */
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1);
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  
+  /* Border Radius - Smaller for modern look */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 999px;
+  
+  /* Transitions */
+  --duration-fast: 75ms;
+  --duration-base: 150ms;
+  --duration-slow: 300ms;
+  --easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   UTILITY STYLES - Apply to all themes
+============================================================ */
+
+body[data-theme] {
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+  transition: background-color var(--duration-base) var(--easing),
+              color var(--duration-base) var(--easing);
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: var(--color-secondary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-base) var(--easing);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-secondary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Ghost Button */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-base) var(--easing);
+}
+
+.btn-ghost:hover {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-secondary-dark);
+  color: var(--color-secondary-dark);
+}
+
+/* Cards */
+.card {
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-xs);
+  transition: all var(--duration-base) var(--easing);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+}
+
+/* Product Grid */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: var(--space-lg);
+  padding: var(--space-xl);
+}
+
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: var(--space-lg);
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Product Card */
+.product-card {
+  background-color: var(--color-bg-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--duration-base) var(--easing);
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-8px);
+}
+
+.product-card-image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  overflow: hidden;
+  transition: transform var(--duration-slow) var(--easing);
+}
+
+.product-card:hover .product-card-image {
+  transform: scale(1.1);
+}
+
+.product-card-content {
+  padding: var(--space-lg);
+}
+
+.product-card-price {
+  color: var(--color-accent);
+  font-size: 20px;
+  font-weight: 700;
+  font-family: "Fira Code", monospace;
+  margin: var(--space-md) 0;
+}
+
+/* Forms */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--space-md);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  transition: all var(--duration-base) var(--easing);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--color-text-secondary);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+  background: transparent;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-base) var(--easing);
+  color: var(--color-text-primary);
+  font-size: 20px;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-bg-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.theme-toggle-btn:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Loading Skeleton */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton {
+  background-color: var(--color-border);
+  border-radius: var(--radius-md);
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
